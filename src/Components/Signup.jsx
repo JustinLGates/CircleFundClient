@@ -2,11 +2,11 @@ import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const SignupButton = () => {
-  const { loginWithRedirect } = useAuth0();
+  const { loginWithPopup } = useAuth0();
   return (
     <button
       onClick={() =>
-        loginWithRedirect({
+        loginWithPopup({
           screen_hint: "signup",
         })
       }

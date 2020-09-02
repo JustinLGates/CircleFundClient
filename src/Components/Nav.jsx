@@ -7,7 +7,7 @@ export const Nav = () => {
   const { isAuthenticated } = useAuth0();
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
       <Link className="navbar-brand" to="/">
         Navbar
       </Link>
@@ -36,6 +36,11 @@ export const Nav = () => {
               About
             </Link>
           </li>
+          <li className="nav-item ">
+            <Link className="nav-link" to="/contactus">
+              Contact Us
+            </Link>
+          </li>
           {isAuthenticated && (
             <li className="nav-item ">
               <Link className="nav-link" to="/profile">
@@ -44,9 +49,6 @@ export const Nav = () => {
             </li>
           )}
         </ul>
-        <span className="form-inline my-2 my-lg-0">
-          {isAuthenticated ? <LogoutButton /> : <LoginButton />}
-        </span>
       </div>
     </nav>
   );

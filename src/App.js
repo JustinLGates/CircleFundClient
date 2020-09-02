@@ -5,10 +5,12 @@ import { Route } from "react-router-dom";
 import About from "./Pages/AboutPage";
 import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
-import landingPage from "./Pages/LandingPage";
+import Footer from "./Components/Footer";
+import ContactUs from "./Pages/Contactus";
 import { useAuth0 } from "@auth0/auth0-react";
 import { setBearer } from "./axios";
 import { resetBearer } from "./axios";
+
 function App() {
   //NOTE If the user is authenticated the beraer token will be set in axios and sent with all
   //requests.If they are not authenticated the token will be set to "".
@@ -23,12 +25,16 @@ function App() {
     resetBearer();
   }
   return (
-    <div className="">
+    <div className="app bg-light">
       <Nav />
-      <Route path="/" exact component={landingPage} />
-      <Route path="/profile" exact component={Profile} />
-      <Route path="/about" exact component={About} />
-      <Route path="/home" exact component={Home} />
+      <div className="body">
+        <Route path="/" exact component={Home} />
+        <Route path="/profile" exact component={Profile} />
+        <Route path="/about" exact component={About} />
+        <Route path="/home" exact component={Home} />
+        <Route path="/contactus" exact component={ContactUs} />
+      </div>
+      <Footer />
     </div>
   );
 }
