@@ -25,9 +25,9 @@ function App() {
     resetBearer();
   }
   return (
-    <div className="app bg-light">
+    <div className="app">
       <Nav />
-      <div className="body">
+      <div className="body container-fluid bg-light">
         <Route path="/" exact component={Home} />
         <Route path="/profile" exact component={Profile} />
         <Route path="/about" exact component={About} />

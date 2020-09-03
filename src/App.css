@@ -9,3 +9,8 @@
 .action:hover {
   cursor: pointer;
 }
+.profile-pic {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
