@@ -1,36 +1,54 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { api } from "../axios";
+import { api, setBearer } from "../axios";
 import Logout from "../Components/Logout";
 import Loading from "../Components/Loading";
-import ProflieForm from "../Components/ProfileForm";
+import Dashboard from "../Components/Dashboard";
 import ProfileForm from "../Components/ProfileForm";
+
 const Profile = () => {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
-  // get the profile data when page loads
-
+  // get the profile data when page loads and set state of the profiledata
   useEffect(() => {
-    let wait = true;
-    if (isAuthenticated) {
-    }
-    getProfileData(wait);
+    getProfileData();
   }, []);
 
-  const [profileData, setProfileData] = useState(null);
+  const [profileData, setProfileData] = useState({
+    Name: null,
+    Email: null,
+    PhoneNumber: null,
+    LogoUrl: null,
+    City: null,
+    State: null,
+    Address: null,
+  });
   const [loading, setLoading] = useState(true);
 
-  async function getProfileData(wait) {
-    if (wait) {
-      await getAccessTokenSilently();
-    }
+  async function getProfileData() {
+    setBearer("Bearer " + (await getAccessTokenSilently()));
     try {
       let res = await api.get("organization");
       if (res.data) {
-        setProfileData(res.data);
-      } else {
-        console.log("nodata...");
+        const {
+          name,
+          email,
+          phoneNumber,
+          logoUrl,
+          city,
+          state,
+          address,
+        } = res.data;
+        setProfileData({
+          Name: name,
+          Email: email,
+          PhoneNumber: phoneNumber,
+          LogoUrl: logoUrl,
+          City: city,
+          State: state,
+          Address: address,
+        });
+        console.log(res.data);
       }
-      console.log(res.data.length);
     } catch (error) {
       console.error(error);
     }
@@ -43,9 +61,8 @@ const Profile = () => {
       <Fragment>
         <div className="row">
           <div className="col-12 d-flex justify-content-between align-items-center">
-            <div className="d-flex justify-content-center align-items-center">
+            <div className="p-2">
               <img className="profile-pic" src={user.picture} alt={user.name} />
-              <h2 className="d-inline p-2">{user.nickname}</h2>
             </div>
             <div className="">
               <Logout />
@@ -54,7 +71,11 @@ const Profile = () => {
         </div>
         <div className="row">
           <div className="col-12">
-            {profileData ? <p>data :)</p> : <ProfileForm />}
+            {profileData ? (
+              <Dashboard ProfileData={profileData} />
+            ) : (
+              <ProfileForm />
+            )}
           </div>
         </div>
       </Fragment>
