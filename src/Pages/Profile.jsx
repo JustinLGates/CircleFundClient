@@ -1,7 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { api, setBearer } from "../axios";
-import Logout from "../Components/Logout";
 import Loading from "../Components/Loading";
 import Dashboard from "../Components/Dashboard";
 import ProfileForm from "../Components/ProfileForm";
@@ -64,18 +63,13 @@ const Profile = () => {
             <div className="p-2">
               <img className="profile-pic" src={user.picture} alt={user.name} />
             </div>
-            <div className="">
-              <Logout />
-            </div>
           </div>
         </div>
         <div className="row">
           <div className="col-12">
-            {profileData ? (
-              <Dashboard ProfileData={profileData} />
-            ) : (
-              <ProfileForm />
-            )}
+
+            <Dashboard ProfileData={profileData} />
+
           </div>
         </div>
       </Fragment>

@@ -1,6 +1,7 @@
 import React from "react";
-import Signup from "../Components/Signup";
+import Login from "../Components/Login";
 import { Link } from "react-router-dom";
+import Logout from "../Components/Logout";
 import { useAuth0 } from "@auth0/auth0-react";
 const HomePage = () => {
   const { isAuthenticated } = useAuth0();
@@ -9,7 +10,7 @@ const HomePage = () => {
       <div className="row pt-5 d-flex justify-content-center bg-light text-dark p-5">
         <div className="col-12">
           <h1 className="font-sand text-center">
-            Our mission is to Make funding the easy part of yours.
+            Maintain Track coverage flakes and communicate more effectivly.
           </h1>
         </div>
         <div className="col-12 col-sm-10 col-lg-6 col-xl-5 pt-lg-5 pt-2">
@@ -21,27 +22,22 @@ const HomePage = () => {
         </div>
 
         <div className="col-12 col-sm-10 col-lg-6 col-xl-5 pt-lg-5 pt-2">
-          <h3 className="font-sand text-left pt-sm-2 pt-md-0 ">
-            Funding at your fingertips
-          </h3>
-          <ul className="p-2 ml-2">
-            <li>No cost to run a fundraiser</li>
-            <li>Easy to share your campaign with your community</li>
-            <li>Super easy to start</li>
-            <li>No obligations</li>
-          </ul>
+
           <p className="">
-            Seting up a new fundraiser is free, quick, and easy. Get your
-            orgonization funded today!
+            Login to get started.
           </p>
           {isAuthenticated ? (
             <p className=" ">
               Looks like your loged in check out your{" "}
               <Link to="profile">profile</Link> to get started
+              <br />
+              <Logout />
             </p>
+
+
           ) : (
             <span className="">
-              <Signup />
+              <Login />
             </span>
           )}
         </div>
