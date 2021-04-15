@@ -3,7 +3,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { api, setBearer } from "../axios";
 import Loading from "../Components/Loading";
 import Dashboard from "../Components/Dashboard";
-import ProfileForm from "../Components/ProfileForm";
 
 const Profile = () => {
   const { user, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -12,40 +11,15 @@ const Profile = () => {
     getProfileData();
   }, []);
 
-  const [profileData, setProfileData] = useState({
-    Name: null,
-    Email: null,
-    PhoneNumber: null,
-    LogoUrl: null,
-    City: null,
-    State: null,
-    Address: null,
-  });
+  const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   async function getProfileData() {
     setBearer("Bearer " + (await getAccessTokenSilently()));
     try {
-      let res = await api.get("organization");
+      let res = await api.get("profile");
       if (res.data) {
-        const {
-          name,
-          email,
-          phoneNumber,
-          logoUrl,
-          city,
-          state,
-          address,
-        } = res.data;
-        setProfileData({
-          Name: name,
-          Email: email,
-          PhoneNumber: phoneNumber,
-          LogoUrl: logoUrl,
-          City: city,
-          State: state,
-          Address: address,
-        });
+        setProfileData(res.data.name);
         console.log(res.data);
       }
     } catch (error) {
@@ -68,7 +42,7 @@ const Profile = () => {
         <div className="row">
           <div className="col-12">
 
-            <Dashboard ProfileData={profileData} />
+            <Dashboard userName={profileData} />
 
           </div>
         </div>

@@ -23,9 +23,7 @@ const HomePage = () => {
 
         <div className="col-12 col-sm-10 col-lg-6 col-xl-5 pt-lg-5 pt-2">
 
-          <p className="">
-            Login to get started.
-          </p>
+
           {isAuthenticated ? (
             <p className=" ">
               Looks like your loged in check out your{" "}
@@ -35,10 +33,15 @@ const HomePage = () => {
             </p>
 
 
-          ) : (
+          ) : (<div>
+
+            <p className="">
+              Login to get started.
+          </p>
             <span className="">
               <Login />
             </span>
+          </div>
           )}
         </div>
       </div>
