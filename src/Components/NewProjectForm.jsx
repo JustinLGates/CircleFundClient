@@ -32,27 +32,25 @@ const NewProjectForm = () => {
 
   return (
     <Fragment>
-      <div className="row py-5">
-        <div className="col-12 col-lg-8 m-auto">
-          <div className="card shadow p-2">
-            <h2 className="p-2">Create New Project</h2>
-            <form className="p-3" action="">
-              <label className="p-0 m-0 pl-1 pt-2">Project name</label>
-              <input
-                className="w-100 p-2 mb-2"
-                name="projectName"
-                type="text"
-                placeholder="Test Zen "
-                onChange={handleFormChange}
-              />
-              <button
-                className="btn btn-primary w-100"
-                onClick={handleSubmitForm}
-              >
-                SUBMIT
+      <div className="col-12 col-lg-8 m-auto">
+        <div className="card shadow p-2">
+          <h2 className="p-2">Create New Project</h2>
+          <form className="p-3" action="">
+            <label className="p-0 m-0 pl-1 pt-2">Project name</label>
+            <input
+              className="w-100 p-2 mb-2"
+              name="projectName"
+              type="text"
+              placeholder="Test Zen "
+              onChange={handleFormChange}
+            />
+            <button
+              className="btn btn-primary w-100"
+              onClick={handleSubmitForm}
+            >
+              SUBMIT
                 </button>
-            </form>
-          </div>
+          </form>
         </div>
       </div>
     </Fragment>

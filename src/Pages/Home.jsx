@@ -10,25 +10,18 @@ const HomePage = () => {
       <div className="row pt-5 d-flex justify-content-center bg-light text-dark p-5">
         <div className="col-12">
           <h1 className="font-sand text-center">
-            Maintain Track coverage flakes and communicate more effectivly.
+            Welcome to Test Zen
           </h1>
         </div>
-        <div className="col-12 col-sm-10 col-lg-6 col-xl-5 pt-lg-5 pt-2">
-          <img
-            className="w-100 rounded shadow"
-            src="https://images.pexels.com/photos/935756/pexels-photo-935756.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=2040"
-            alt=""
-          />
-        </div>
+
 
         <div className="col-12 col-sm-10 col-lg-6 col-xl-5 pt-lg-5 pt-2">
 
 
           {isAuthenticated ? (
-            <p className=" ">
-              Looks like your loged in check out your{" "}
-              <Link to="profile">profile</Link> to get started
-              <br />
+            <p className=" d-inline ">
+              Looks like your authenticated
+              <Link to="profile"> GET STARTED.</Link><span className="pr-5"></span>
               <Logout />
             </p>
 

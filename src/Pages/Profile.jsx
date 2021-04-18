@@ -11,17 +11,15 @@ const Profile = () => {
     getProfileData();
   }, []);
 
-  const [profileData, setProfileData] = useState(null);
+  const [profileData, setProfileData] = useState();
   const [loading, setLoading] = useState(true);
 
   async function getProfileData() {
     setBearer("Bearer " + (await getAccessTokenSilently()));
     try {
       let res = await api.get("profile");
-      if (res.data) {
-        setProfileData(res.data.name);
-        console.log(res.data);
-      }
+      console.log("ProfileData" + res.data.name);
+      setProfileData(res.data);
     } catch (error) {
       console.error(error);
     }
@@ -42,7 +40,7 @@ const Profile = () => {
         <div className="row">
           <div className="col-12">
 
-            <Dashboard userName={profileData} />
+            <Dashboard userName={profileData.name} userHasProfile={profileData.name ? true : false} />
 
           </div>
         </div>

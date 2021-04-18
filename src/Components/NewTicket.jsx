@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { api } from "../axios";
 
-const NewTicket = () => {
+const NewTicket = ({ projectId }) => {
   const [testName, setTestName] = useState("");
   const [priorityLevel, setPriorityLevel] = useState("");
   const [assignedTo, setAssignedTo] = useState("");
@@ -16,7 +16,8 @@ const NewTicket = () => {
 
   let formData = {};
 
-  const handleSubmitForm = async () => {
+  const handleSubmitForm = async (e) => {
+    e.preventDefault()
     formData = {
       testName: testName,
       priorityLevel: priorityLevel,
@@ -29,9 +30,10 @@ const NewTicket = () => {
       jiraTicket: jiraTicket,
       notes: notes,
     };
+    console.log(formData)
     try {
-      let res = await api.post("ticket", formData);
-      console.log(res.data);
+      let res = await api.post(`project/${projectId}/ticket`, formData);
+      console.log("create ticket response" + res.data);
     } catch (error) {
       console.error(error);
     }
@@ -41,6 +43,7 @@ const NewTicket = () => {
     let targetValue = event.target.value;
     switch (event.target.name) {
       case "testName":
+        console.log("setting test name to:" + targetValue)
         setTestName(targetValue);
         break;
       case "priorityLevel":
