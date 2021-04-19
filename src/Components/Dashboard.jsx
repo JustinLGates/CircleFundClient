@@ -44,7 +44,7 @@ const Dashboard = ({ userHasProfile, userName }) => {
           return (
             <div className="col-4 p-4" key={project.projectId}>
 
-              <Link to={"project/" + project.projectId} className="shadow d-flex justify-content-between align-items-center">
+              <Link to={"projects/" + project.projectId} className="shadow d-flex justify-content-between align-items-center">
                 <h4 className="p-2 d-inline">{project.name}</h4>
               </Link>
             </div>

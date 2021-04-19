@@ -8,6 +8,7 @@ import Profile from "./Pages/Profile";
 import Footer from "./Components/Footer";
 import ContactUs from "./Pages/Contactus";
 import Project from "./Pages/Project";
+import Ticket from "./Pages/Ticket";
 import { useAuth0 } from "@auth0/auth0-react";
 import { setBearer } from "./axios";
 import { resetBearer } from "./axios";
@@ -34,7 +35,8 @@ function App() {
         <Route path="/about" exact component={About} />
         <Route path="/home" exact component={Home} />
         <Route path="/contactus" exact component={ContactUs} />
-        <Route path="/project/:projectId" name="project" component={Project}/> 
+        <Route path="/project/:projectId/ticket/:ticketId" name="ticket" component={Ticket}/>
+        <Route path="/projects/:projectId" name="project" component={Project}/> 
       </div>
       <Footer />
     </div>

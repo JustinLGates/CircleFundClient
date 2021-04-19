@@ -3,18 +3,15 @@ import { useParams } from "react-router-dom"
 import { useAuth0 } from "@auth0/auth0-react";
 import { api, setBearer } from "../axios";
 import Loading from "../Components/Loading";
-import TicketCard from "../Components/TicketCard"
-import NewTicket from "../Components/NewTicket"
 
-const Project = () => {
+const Ticket = () => {
 
   const { projectId } = useParams();
+  const { ticketId } = useParams();
   const { getAccessTokenSilently } = useAuth0();
   const [ticketData, setTicketData] = useState([]);
-  const [projectName, setProjectName] = useState();
   const [loading, setLoading] = useState(true);
 
-  // get the profile data when page loads and set state of the profiledata
   useEffect(() => {
     getTicketData();
   }, []);
@@ -23,26 +20,16 @@ const Project = () => {
 
   async function getTicketData() {
     setBearer("Bearer " + (await getAccessTokenSilently()));
-    getProject();
-    loadTickets();
+    loadTicket();
     setLoading(false);
   }
 
-  const loadTickets = async () => {
+  const loadTicket = async () => {
     try {
-      let res = await api.get(`project/${projectId}/ticket`);
+      let res = await api.get(`project/${projectId}/ticket/${ticketId}`);
       setTicketData(res.data);
     } catch (error) {
       console.error(error);
-    }
-  }
-
-  const getProject = async () => {
-    try {
-      const res = await api.get(`project/${projectId}`);
-      setProjectName(res.data.name)
-    } catch (error) {
-      console.log(error)
     }
   }
 
@@ -53,20 +40,8 @@ const Project = () => {
       <div className="row">
         <div className="col-12 d-flex justify-content-between align-items-center">
           <div className="p-2">
-            <h1>{projectName}</h1>
+            <h1>Hello world{ticketData.testName}</h1>
           </div>
-        </div>
-      </div>
-      <div className="row">
-        {
-          ticketData && ticketData.map(ticket => {
-            return (<TicketCard key={ticket.ticketId} data={ticket} />)
-          })
-        }
-      </div>
-      <div className="row">
-        <div className="col-12">
-          <NewTicket projectId={projectId} />
         </div>
       </div>
     </Fragment>
@@ -74,4 +49,4 @@ const Project = () => {
   );
 };
 
-export default Project;
+export default Ticket;
