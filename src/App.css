@@ -1,16 +1,47 @@
 .body {
   flex-grow: 1;
 }
+
 .app {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
+
 .action:hover {
   cursor: pointer;
 }
+
 .profile-pic {
   height: 50px;
   width: 50px;
   border-radius: 50%;
+}
+
+.boarder-right{
+  border-right: 5px solid grey;
+}
+
+input{
+    background-color: transparent;
+    width: 100%;
+    outline: none;
+    outline-style: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: solid #313131e1 1px;
+}
+
+.underline{
+  border-bottom: solid 1px darkslategrey;
+}
+
+.highlight-on-hover:hover{
+  transition: .2s;
+  background-color: rgba(0, 0, 0, 0.06);
+}
+.highlight-on-hover{
+  transition: .3s;
+  background-color: rgba(0, 0, 0, 0);
 }

@@ -5,6 +5,8 @@ import { api, setBearer } from "../axios";
 import Loading from "../Components/Loading";
 import TicketCard from "../Components/TicketCard"
 import NewTicket from "../Components/NewTicket"
+import LargeHeader from "../Components/SmallElements/LargeHeader";
+import Button from "../Components/SmallElements/Button"
 
 const Project = () => {
 
@@ -46,27 +48,37 @@ const Project = () => {
     }
   }
 
+  const expandForm = () => {
+
+  }
+
   return loading ? (
     <Loading />
   ) : (
     <Fragment>
-      <div className="row">
-        <div className="col-12 d-flex justify-content-between align-items-center">
-          <div className="p-2">
-            <h1>{projectName}</h1>
+      <div className="container-fluid">
+
+
+        <NewTicket projectId={projectId} />
+
+        <div className="row">
+          <div className="col-12 d-flex justify-content-between align-items-center">
+            <div className="p-2">
+              <LargeHeader text={projectName} />
+            </div>
           </div>
         </div>
-      </div>
-      <div className="row">
-        {
-          ticketData && ticketData.map(ticket => {
-            return (<TicketCard key={ticket.ticketId} data={ticket} />)
-          })
-        }
-      </div>
-      <div className="row">
-        <div className="col-12">
-          <NewTicket projectId={projectId} />
+        <div className="row">
+          <div className="col-12 col-lg-3">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newtestmodal">CREATE</button>
+          </div>
+          <div className="col-12 col-lg-9">
+            {
+              ticketData && ticketData.map(ticket => {
+                return (<TicketCard key={ticket.ticketId} data={ticket} />)
+              })
+            }
+          </div>
         </div>
       </div>
     </Fragment>

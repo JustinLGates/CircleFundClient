@@ -1,55 +1,36 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState } from "react";
 import { api } from "../axios";
+import SecondaryHeader from "./SmallElements/SecondaryHeader";
+import Button from "./SmallElements/Button";
+import LabeledInput from "./Composites/LabeledInput";
 
 const NewProjectForm = () => {
   const [projectName, setProjectName] = useState("");
 
   let formData = {};
 
-  const handleSubmitForm = async () => {
+  const handleSubmitForm = async (e) => {
     formData = {
-      projectName: projectName,
+      name: projectName,
     };
     try {
       let res = await api.post("/project", formData);
-      console.log(res.data);
-      return res.data
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleFormChange = (event) => {
-    let targetValue = event.target.value;
-    switch (event.target.name) {
-      case "projectName":
-        setProjectName(targetValue);
-        break;
-      default:
-        break;
-    }
-  };
-
   return (
     <Fragment>
-      <div className="col-12 col-lg-8 m-auto">
-        <div className="card shadow p-2">
-          <h2 className="p-2">Create New Project</h2>
+      <div className="col-12 m-auto">
+        <div className="card shadow p-4">
+          <SecondaryHeader text={"Start A New Project"} />
           <form className="p-3" action="">
-            <label className="p-0 m-0 pl-1 pt-2">Project name</label>
-            <input
-              className="w-100 p-2 mb-2"
-              name="projectName"
-              type="text"
-              placeholder="Test Zen "
-              onChange={handleFormChange}
-            />
-            <button
-              className="btn btn-primary w-100"
-              onClick={handleSubmitForm}
-            >
-              SUBMIT
-                </button>
+            <LabeledInput labelText="Project Name" inputPlaceholder="Project Patato Salad" onChange={(e) => setProjectName(e.target.value)} />
+            <br />
+            <div className="p-4">
+              <Button text={"CREATE PROJECT"} onclick={handleSubmitForm} />
+            </div>
           </form>
         </div>
       </div>

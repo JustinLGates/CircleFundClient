@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { api } from "../axios";
+import LabeledInput from "./Composites/LabeledInput"
 
 const NewTicket = ({ projectId }) => {
   const [testName, setTestName] = useState("");
@@ -17,7 +18,7 @@ const NewTicket = ({ projectId }) => {
   let formData = {};
 
   const handleSubmitForm = async (e) => {
-    e.preventDefault()
+    // e.preventDefault()
     formData = {
       testName: testName,
       priorityLevel: priorityLevel,
@@ -80,19 +81,25 @@ const NewTicket = ({ projectId }) => {
   };
   return (
     <Fragment>
-      <div className="row">
-        <div className="col-12 col-lg-8 m-auto">
-          <div className="card shadow p-2">
-            <h2 className="p-2">CREATE TEST.</h2>
-            <form className="p-3" action="">
-              <label className="p-0 m-0 pl-1 pt-2">Test Name</label>
+      <div class="modal fade" id="newtestmodal" tabindex="-1" role="dialog" aria-labelledby="newtestmodal" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="newtestmodal">CREATE TEST</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form className="p-3">
+              <LabeledInput name={testName} labelText={"Test Name"} onChange={(e) => setTestName(e.target.value)} />
+              {/* <label className="p-0 m-0 pl-1 pt-2">Test Name</label>
               <input
                 className="w-100 p-2 mb-2"
                 name="testName"
                 type="text"
                 placeholder="Test login as user and create ticket"
                 onChange={handleFormChange}
-              />
+              /> */}
               <label className="p-0 m-0 pl-1 pt-2">Priority Level</label>
               <input
                 className="w-100 p-2 mb-2"
@@ -166,14 +173,17 @@ const NewTicket = ({ projectId }) => {
                 onChange={handleFormChange}
               />
               <div className="px-5 mx-5 pt-3">
-                <button
-                  className="btn btn-primary w-100"
-                  onClick={handleSubmitForm}
-                >
-                  Submit
+                <div class="modal-footer">
+                  <button
+                    className="btn btn-primary w-100"
+                    onClick={handleSubmitForm}
+                  >
+                    Submit
                 </button>
+                </div>
               </div>
             </form>
+
           </div>
         </div>
       </div>

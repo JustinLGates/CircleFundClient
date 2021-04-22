@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { Fragment } from "react";
+import LargeHeader from "./SmallElements/LargeHeader"
+import SecondaryHeader from "./SmallElements/SecondaryHeader"
 import { Link } from "react-router-dom";
 import { api } from "../axios";
 import NewProjectForm from "./NewProjectForm";
 
-const Dashboard = ({ userHasProfile, userName }) => {
+const Dashboard = ({ user }) => {
 
   const [projects, setProjects] = useState([])
   useEffect(() => {
@@ -21,44 +24,45 @@ const Dashboard = ({ userHasProfile, userName }) => {
     }
   }
 
-  async function createProfile() {
-    try {
-      const data = { name: "Justin Gates" }
-      const response = await api.post("profile", data);
-      console.log("Created Profile response" + response.data)
-      setProjects(response.data)
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-
-  return userHasProfile ? (
-    <div className="row">
-      <div className="col-12">
-        <h1>HELLO, {userName}</h1>
+  return (
+    <fragment>
+      <div className="row">
+        <div className="col-12">
+          <LargeHeader text={"Welcome, " + user.nickname} />
+        </div>
       </div>
+      <div className="row pt-5 d-flex justify-content-around">
+        <div className="col-12 col-lg-4">
+          <NewProjectForm />
+        </div>
+        <div className="col-12 col-lg-7">
+          <div className="row">
+            <div className="col-12 shadow p-4">
+              <div className="p-2">
+                <SecondaryHeader text={"Your Projects"} />
+              </div>
+              {
+                projects && projects.map(project => {
+                  return (
+                    <div className="row">
+                      <div className="col-12 p-4" key={project.projectId}>
+                        <Link to={"projects/" + project.projectId} className="d-flex justify-content-between align-items-center underline highlight-on-hover">
+                          <h4 className="p-1 m-0 d-inline text-dark">{project.name}</h4>
+                          <h3 className="p-1 m-0 text-dark ">{project.role}</h3>
+                        </Link>
+                      </div>
+                    </div>
+                  )
 
-      {
-        projects && projects.map(project => {
-          return (
-            <div className="col-4 p-4" key={project.projectId}>
-
-              <Link to={"projects/" + project.projectId} className="shadow d-flex justify-content-between align-items-center">
-                <h4 className="p-2 d-inline">{project.name}</h4>
-              </Link>
+                })
+              }
             </div>
-          )
+          </div>
+        </div>
 
-        })
-      }
-      <NewProjectForm />
-    </div>
-  ) : <div>
-    <p>NO PROFILE DATA</p>
-    <input type="text" name="userName" placeholder="Name" />
-    <button onClick={createProfile} className="btn btn-outline-fprimary">Create Profile</button>
-  </div>;
+      </div>
+    </fragment>
+  )
 };
 
 export default Dashboard;

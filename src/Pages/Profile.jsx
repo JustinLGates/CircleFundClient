@@ -23,7 +23,20 @@ const Profile = () => {
     } catch (error) {
       console.error(error);
     }
+    if (profileData == undefined) {
+      createProfile()
+    }
     setLoading(false);
+  }
+
+  async function createProfile() {
+    try {
+      const data = { name: user.nickname }
+      const response = await api.post("profile", data);
+      console.log("Created Profile response" + response.data)
+    } catch (error) {
+      console.log(error)
+    }
   }
   return loading ? (
     <Loading />
@@ -33,15 +46,13 @@ const Profile = () => {
         <div className="row">
           <div className="col-12 d-flex justify-content-between align-items-center">
             <div className="p-2">
-              <img className="profile-pic" src={user.picture} alt={user.name} />
+              <img className="profile-pic" src={user.picture} alt={user.nickName} />
             </div>
           </div>
         </div>
         <div className="row">
           <div className="col-12">
-
-            <Dashboard userName={profileData.name} userHasProfile={profileData.name ? true : false} />
-
+            <Dashboard user={user} />
           </div>
         </div>
       </Fragment>
