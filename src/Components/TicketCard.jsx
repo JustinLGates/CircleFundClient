@@ -9,8 +9,8 @@ const TicketCard = ({ data }) => {
         <div className="col-12">
           <div className="p-2 underline highlight-on-hover">
             <CardHeader text={data.testName} />
-            <p>{data.priority || "Undetermend"}</p>
-            <p>{data.automate || "asd"} </p>
+            <p>{data.priority || "medium"}</p>
+            <p>{data.automate || "no automation status / false"} </p>
           </div>
         </div>
       </Link>

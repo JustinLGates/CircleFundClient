@@ -15,6 +15,7 @@ const NewProjectForm = () => {
     };
     try {
       let res = await api.post("/project", formData);
+
     } catch (error) {
       console.error(error);
     }

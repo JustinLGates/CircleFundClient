@@ -18,12 +18,11 @@ const Profile = () => {
     setBearer("Bearer " + (await getAccessTokenSilently()));
     try {
       let res = await api.get("profile");
-      console.log("ProfileData" + res.data.name);
       setProfileData(res.data);
     } catch (error) {
       console.error(error);
     }
-    if (profileData == undefined) {
+    if (profileData === undefined) {
       createProfile()
     }
     setLoading(false);

@@ -2,7 +2,7 @@ import React from "react";
 const Label = ({ text }) => {
 
   return (
-    <label className="m-0 m-1">{text}</label>
+    <label className="label">{text}</label>
   );
 };
 

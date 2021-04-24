@@ -1,7 +1,5 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import LogoutButton from "./Logout";
-import LoginButton from "./Login";
 import { Link } from "react-router-dom";
 export const Nav = () => {
   const { isAuthenticated } = useAuth0();

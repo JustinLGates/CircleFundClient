@@ -2,7 +2,7 @@ import React from "react";
 const Input = ({ text, onChange, placeholder }) => {
 
   return (
-    <input onChange={onChange} placeholder={placeholder} className="m-1 input">{text}</input>
+    <input onChange={onChange} placeholder={placeholder} className="input">{text}</input>
   );
 };
 
