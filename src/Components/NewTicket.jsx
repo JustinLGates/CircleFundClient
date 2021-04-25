@@ -1,12 +1,12 @@
 import React, { Fragment, useState } from "react";
 import { api } from "../axios";
 import LabeledInput from "./Composites/LabeledInput"
-import CheckBox from "./SmallElements/Checkbox"
 import Button from "./SmallElements/Button"
+import Label from './SmallElements/Label'
 
 const NewTicket = ({ projectId }) => {
   const [testName, setTestName] = useState("");
-  const [priorityLevel, setPriorityLevel] = useState("");
+  const [priorityLevel, setPriorityLevel] = useState("Undetermined");
   const [assignedTo, setAssignedTo] = useState("");
   const [setup, setSetup] = useState("");
   const [steps, setSteps] = useState("");
@@ -16,11 +16,10 @@ const NewTicket = ({ projectId }) => {
   const [jiraTicket, setJiraTicket] = useState("");
   const [notes, setNotes] = useState("");
 
-
   let formData = {};
 
   const handleSubmitForm = async (e) => {
-    // e.preventDefault()
+    e.preventDefault()
     formData = {
       testName: testName,
       priorityLevel: priorityLevel,
@@ -28,6 +27,9 @@ const NewTicket = ({ projectId }) => {
       setup: setup,
       steps: steps,
       verifications: verifications,
+      iosStatus: "Blocked",
+      androidStatus: "In Proggress",
+      webStatus: "Complete",
       automate: automate,
       relatedFeature: relatedFeature,
       jiraTicket: jiraTicket,
@@ -59,12 +61,56 @@ const NewTicket = ({ projectId }) => {
               <LabeledInput name={assignedTo} labelText={"Assign to"} onChange={(e) => setAssignedTo(e.target.value)} />
               <LabeledInput name={setup} labelText={"Setup"} onChange={(e) => setSetup(e.target.value)} />
               <LabeledInput name={steps} labelText={"Steps"} onChange={(e) => setSteps(e.target.value)} />
-              <LabeledInput name={verifications} labelText={"Verifications"} onChange={(e) => setVerifications(e.target.value)} />
+              <LabeledInput name={verifications} labelText={"Verification"} onChange={(e) => setVerifications(e.target.value)} />
               <LabeledInput name={jiraTicket} labelText={"Jira ticket"} onChange={(e) => setJiraTicket(e.target.value)} />
               <LabeledInput name={relatedFeature} labelText={"Jira ticket"} onChange={(e) => setRelatedFeature(e.target.value)} />
               <LabeledInput name={notes} labelText={"Notes"} onChange={(e) => setNotes(e.target.value)} />
-              <CheckBox name={automate} onChange={(e) => setAutomate(false)} text="Automate" />
-              <p>{automate ? "true" : "false"}</p>
+
+              {/* Move to component */}
+              <div className="form-element-container d-flex justify-content-between align-items-center">
+                <div className="d-flex align-items-center">
+                  <label className="switch-label">Automate</label>
+                  <div className="d-inline-flex">
+                    <label class="switch">
+                      <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => setAutomate(e.target.checked)} />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              {/* Move to component */}
+
+              {/* Move to component */}
+              <div className="form-element-container">
+                <Label text={"Automation Priority"} />
+                <select class="form-select" aria-label="Select priority level">
+                  <option default>Undifined</option>
+                  <option>High</option>
+                  <option>Mid</option>
+                  <option>Low</option>
+                  <option>None</option>
+                </select>
+              </div>
+              {/* Move to component */}
+
+              {/* Move to component */}
+              <div className="form-element-container">
+                <Label text={"Automation Priority"} />
+                <select onChange={(e) => setPriorityLevel(e.target.value)} class="form-select" aria-label="Select automation priority">
+                  <option default >Undetermined</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                  <option value="Backlog">Backlog</option>
+                </select>
+              </div>
+              {/* Move to component */}
+
+              {/* Move to component */}
+              <textarea rows={6} className="w-100">
+              </textarea>
+              {/* Move to component */}
+
               <div className="px-5 mx-5 pt-3">
                 <div class="modal-footer">
                   <Button text={"Create"} onclick={handleSubmitForm} />

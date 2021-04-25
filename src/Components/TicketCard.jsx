@@ -8,9 +8,17 @@ const TicketCard = ({ data }) => {
       <Link to={`/project/${data.projectId}/ticket/${data.ticketId}`}>
         <div className="col-12">
           <div className="p-2 underline highlight-on-hover">
-            <CardHeader text={data.testName} />
-            <p>{data.priority || "medium"}</p>
-            <p>{data.automate || "no automation status / false"} </p>
+            <div className="d-flex align-items-center justify-content-between">
+              <CardHeader text={data.testName} />
+              <div>
+
+                <label className="d-inline">{data.priorityLevel}</label>
+                <span className="px-3">
+                  <i class={data.priorityLevel === "High" ? "fas fa-angle-double-up text-danger" : data.priorityLevel === "Medium" ? "fas fa-angle-up text-danger " : data.priorityLevel === "Undetermined" ? "fas fa-minus text-warning" : data.priorityLevel === "Low" ? "fas fa-angle-down text-success" : "fas fa-angle-double-down text-success"}></i>
+                </span>
+              </div>
+            </div>
+            <p>{data.automate ? "Can be automated" : "Manual only"} </p>
           </div>
         </div>
       </Link>

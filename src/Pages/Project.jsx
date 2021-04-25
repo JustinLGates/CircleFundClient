@@ -6,6 +6,7 @@ import Loading from "../Components/Loading";
 import TicketCard from "../Components/TicketCard"
 import NewTicket from "../Components/NewTicket"
 import LargeHeader from "../Components/SmallElements/LargeHeader";
+import Button from "../Components/SmallElements/Button"
 
 const Project = () => {
 
@@ -33,7 +34,6 @@ const Project = () => {
     try {
       let res = await api.get(`project/${projectId}/ticket`);
       setTicketData(res.data);
-      console.log(res.data)
     } catch (error) {
       console.error(error);
     }
@@ -48,10 +48,6 @@ const Project = () => {
     }
   }
 
-  const expandForm = () => {
-
-  }
-
   return loading ? (
     <Loading />
   ) : (
@@ -60,6 +56,14 @@ const Project = () => {
 
 
         <NewTicket projectId={projectId} />
+
+        <div className="row">
+          <div className="col-12">
+            <div className="d-flex justify-content-center align-times-center">
+              <input id="searchbar" type="text" placeholder="search" />
+            </div>
+          </div>
+        </div>
 
         <div className="row">
           <div className="col-12 d-flex justify-content-between align-items-center">

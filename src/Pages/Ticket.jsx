@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom"
 import { useAuth0 } from "@auth0/auth0-react";
 import { api, setBearer } from "../axios";
 import Loading from "../Components/Loading";
+import SecondaryHeader from "../Components/SmallElements/SecondaryHeader"
+import TestInfoTab from '../Components/TestInfoTab'
 
 const Ticket = () => {
 
@@ -11,12 +13,11 @@ const Ticket = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [ticketData, setTicketData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [platformContext, setPlatformContext] = useState("iOS");
 
   useEffect(() => {
     getTicketData();
   }, []);
-  useEffect(() => {
-  }, [ticketData])
 
   async function getTicketData() {
     setBearer("Bearer " + (await getAccessTokenSilently()));
@@ -37,10 +38,49 @@ const Ticket = () => {
     <Loading />
   ) : (
     <Fragment>
-      <div className="row">
-        <div className="col-12 d-flex justify-content-between align-items-center">
-          <div className="p-2">
-            <h1>Hello world{ticketData.testName}</h1>
+      <div className="container-fluid p-5">
+        <div className="row">
+          <div className="col-12">
+            <div className="d-flex justify-content-between">
+              <h1 className="d-inline">Test: {ticketData.testName}</h1>
+              <h3 className="d-inline">Priotiry: {ticketData.priorityLevel || "N/A"}
+                <span className="px-3">
+
+                  <i class={ticketData.priorityLevel === "High" ? "fas fa-angle-double-up text-danger" : ticketData.priorityLevel === "Medium" ? "fas fa-angle-up text-danger " : ticketData.priorityLevel === "Undetermined" ? "fas fa-minus text-warning" : ticketData.priorityLevel === "Low" ? "fas fa-angle-down text-success" : "fas fa-angle-double-down text-success"}></i>
+                </span>
+              </h3>
+            </div>
+          </div>
+          <div className="col-12">
+
+            <SecondaryHeader text="Setup:" />
+            <p>{ticketData.setup || "No Data"}</p>
+            <SecondaryHeader text="Steps:" />
+            <p>{ticketData.steps || "No Data"}</p>
+            <SecondaryHeader text="Verifications:" />
+            <p>{ticketData.verifications || "No Data"}</p>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-12">
+
+            <div className="d-flex align-items-center">
+              <span>
+                <a className={platformContext === "iOS" ? "p-1 mx-2 badge-primary text-light badge action" : "p-1 mx-2 bg-light text-primary badge action"} onClick={() => setPlatformContext("iOS")}>iOS</a> |
+                </span>
+              <span>
+                <a className={platformContext === "Android" ? "p-1 mx-2 badge-primary text-light badge action" : "p-1 mx-2 bg-light text-primary badge action"} onClick={() => setPlatformContext("Android")}>Android </a> |
+                </span>
+              <span>
+                <a className={platformContext === "Web" ? "p-1 mx-2 badge-primary text-light badge action" : "p-1 mx-2 bg-light text-primary badge action"} onClick={() => setPlatformContext("Web")}>Web </a>
+              </span>
+              <hr />
+            </div>
+
+            <h2>{platformContext}  Details </h2>
+
+            <TestInfoTab ticketData={ticketData} platform={platformContext} />
           </div>
         </div>
       </div>
