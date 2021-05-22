@@ -12,6 +12,9 @@ const Ticket = () => {
   const { ticketId } = useParams();
   const { getAccessTokenSilently } = useAuth0();
   const [ticketData, setTicketData] = useState([]);
+  const [setupArray, setSetupArray] = useState([]);
+  const [stepsArray, setStepsArray] = useState([]);
+  const [verificationsArray, setVerificationsArray] = useState([]);
   const [loading, setLoading] = useState(true);
   const [platformContext, setPlatformContext] = useState("iOS");
 
@@ -28,11 +31,15 @@ const Ticket = () => {
   const loadTicket = async () => {
     try {
       let res = await api.get(`project/${projectId}/ticket/${ticketId}`);
+      setSetupArray(res.data.setup.split(","))
+      setStepsArray(res.data.steps.split(","))
+      setVerificationsArray(res.data.verifications.split(","))
       setTicketData(res.data);
     } catch (error) {
       console.error(error);
     }
   }
+
 
   return loading ? (
     <Loading />
@@ -50,15 +57,28 @@ const Ticket = () => {
                 </span>
               </h3>
             </div>
+
           </div>
           <div className="col-12">
 
             <SecondaryHeader text="Setup:" />
-            <p>{ticketData.setup || "No Data"}</p>
+            {
+              setupArray.map((item, index) => {
+                return (<p className="pl-5" key={index}>{index + 1}. {item}</p>)
+              })
+            }
             <SecondaryHeader text="Steps:" />
-            <p>{ticketData.steps || "No Data"}</p>
+            {
+              stepsArray.map((item, index) => {
+                return (<p className="pl-5" key={index}>{index + 1}. {item}</p>)
+              })
+            }
             <SecondaryHeader text="Verifications:" />
-            <p>{ticketData.verifications || "No Data"}</p>
+            {
+              verificationsArray.map((item, index) => {
+                return (<p className="pl-5" key={index}>{index + 1}. {item}</p>)
+              })
+            }
           </div>
         </div>
 

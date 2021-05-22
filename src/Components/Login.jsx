@@ -14,7 +14,7 @@ const LoginButton = () => {
   return (
     <button
       onClick={() => loginWithPopup().then(setBearerToken)}
-      className="btn btn-primary"
+      className="btn btn-success"
     >
       Log In
     </button>

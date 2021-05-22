@@ -25,27 +25,24 @@ const Dashboard = ({ user }) => {
 
   return (
     <fragment>
-      <div className="row">
-        <div className="col-12">
-          <LargeHeader text={"Welcome, " + user.nickname} />
-        </div>
-      </div>
+
       <div className="row pt-5 d-flex justify-content-around">
-        <div className="col-12 col-lg-4">
-          <NewProjectForm />
-        </div>
         <div className="col-12 col-lg-7">
           <div className="row">
             <div className="col-12 shadow p-4">
-              <div className="p-2">
-                <SecondaryHeader text={"Your Projects"} />
+              <div className="p-4">
+                <div className="d-flex justify-content-between">
+                  <h2>Your Projects</h2>
+                  <h2>Role</h2>
+                </div>
+                <hr />
               </div>
               {
                 projects && projects.map(project => {
                   return (
                     <div className="row">
-                      <div className="col-12 p-4" key={project.projectId}>
-                        <Link to={"projects/" + project.projectId} className="d-flex justify-content-between align-items-center underline highlight-on-hover">
+                      <div className="col-12 px-4" key={project.projectId}>
+                        <Link to={"projects/" + project.projectId} className="d-flex justify-content-between align-items-center highlight-on-hove">
                           <h4 className="p-1 m-0 d-inline text-dark">{project.name}</h4>
                           <h3 className="p-1 m-0 text-dark ">{project.role}</h3>
                         </Link>
@@ -57,6 +54,9 @@ const Dashboard = ({ user }) => {
               }
             </div>
           </div>
+        </div>
+        <div className="col-12 col-lg-4">
+          <NewProjectForm />
         </div>
 
       </div>

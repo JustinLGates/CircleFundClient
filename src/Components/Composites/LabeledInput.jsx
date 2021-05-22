@@ -3,12 +3,12 @@ import Input from "../SmallElements/Input"
 import Label from "../SmallElements/Label"
 
 
-const LabeledInput = ({ name, labelText, inputText, inputPlaceholder, onChange }) => {
+const LabeledInput = ({ inputValue, name, labelText, inputText, inputPlaceholder, onChange }) => {
 
   return (
     <div className="labeled-input">
       <Label text={labelText} />
-      <Input name={name} text={inputText} inputPlaceholder={inputPlaceholder} onChange={onChange} />
+      <Input inputValue={inputValue} name={name} text={inputText} inputPlaceholder={inputPlaceholder} onChange={onChange} />
     </div>
   );
 };

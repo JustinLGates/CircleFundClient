@@ -74,7 +74,7 @@ const Project = () => {
         </div>
         <div className="row">
           <div className="col-12 col-lg-3">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newtestmodal">CREATE</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newtestmodal">CREATE TEST</button>
           </div>
           <div className="col-12 col-lg-9">
             {

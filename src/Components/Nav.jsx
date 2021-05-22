@@ -1,6 +1,8 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
+import Logout from "../Components/Logout";
+import Login from "../Components/Login";
 export const Nav = () => {
   const { isAuthenticated } = useAuth0();
 
@@ -42,11 +44,12 @@ export const Nav = () => {
           {isAuthenticated && (
             <li className="nav-item ">
               <Link className="nav-link" to="/profile">
-                Profile
+                Projects
               </Link>
             </li>
           )}
         </ul>
+        {isAuthenticated ? (<Logout />) : (<Login />)}
       </div>
     </nav>
   );

@@ -23,13 +23,26 @@ const NewTicket = ({ projectId }) => {
 
   const handleSubmitForm = async (e) => {
     e.preventDefault()
+
+    if (setupStep.length > 0) {
+      setupArray.push(setupStep)
+    }
+
+    if (steps.length > 0) {
+      stepsArray.push(steps)
+    }
+
+    if (verifications.length > 0) {
+      verificationsArray.push(verifications)
+    }
+
     formData = {
       testName: testName,
       priorityLevel: priorityLevel,
       assignedTo: assignedTo,
-      setup: JSON.stringify(setupArray),
-      steps: JSON.stringify(stepsArray),
-      verifications: JSON.stringify(verificationsArray),
+      setup: setupArray.toString(),
+      steps: stepsArray.toString(),
+      verifications: verificationsArray.toString(),
       iosStatus: "Blocked",
       androidStatus: "In Proggress",
       webStatus: "Complete",
