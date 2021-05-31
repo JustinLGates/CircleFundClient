@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { api } from "../axios";
 import LabeledInput from "./Composites/LabeledInput"
-import Button from "./SmallElements/Button"
+import Button from "./SmallElements/Button/Button"
 import Label from './SmallElements/Label'
 
 const NewTicket = ({ projectId }) => {

@@ -1,5 +1,4 @@
-import React, { useState, Fragment } from "react";
-import SecondaryHeader from "../Components/SmallElements/SecondaryHeader"
+import React, { Fragment } from "react";
 
 const TestInfoTab = ({ platform, ticketData }) => {
 

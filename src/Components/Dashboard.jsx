@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import LargeHeader from "./SmallElements/LargeHeader"
-import SecondaryHeader from "./SmallElements/SecondaryHeader"
 import { Link } from "react-router-dom";
 import { api } from "../axios";
 import NewProjectForm from "./NewProjectForm";

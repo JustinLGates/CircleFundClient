@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from "react";
 import { api } from "../axios";
 import SecondaryHeader from "./SmallElements/SecondaryHeader";
-import Button from "./SmallElements/Button";
+import Button from "./SmallElements/Button/Button";
 import LabeledInput from "./Composites/LabeledInput";
 
 const NewProjectForm = () => {
@@ -12,6 +12,9 @@ const NewProjectForm = () => {
   const handleSubmitForm = async (e) => {
     formData = {
       name: projectName,
+      testingIos: true,
+      testingAndroid: true,
+      testingWeb: true,
     };
     try {
       let res = await api.post("/project", formData);
