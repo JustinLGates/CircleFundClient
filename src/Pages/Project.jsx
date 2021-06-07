@@ -4,8 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { api, setBearer } from "../axios";
 import Loading from "../Components/Loading";
 import TicketCard from "../Components/TicketCard"
-import NewTicket from "../Components/NewTicket"
-import LargeHeader from "../Components/SmallElements/LargeHeader";
+import SideNavDrawer from "../Components/SideNavDrawer"
 
 const Project = () => {
 
@@ -15,12 +14,16 @@ const Project = () => {
   const [projectName, setProjectName] = useState();
   const [loading, setLoading] = useState(true);
 
-  // get the profile data when page loads and set state of the profiledata
+  const reportLinks = [
+    { link: `/profile`, text: "Projects", icon: "fas fa-arrow-circle-left" },
+    { link: `/project/${projectId}/new/ticket`, text: "New Test", icon: "fa fa-plus-circle " },
+    { link: `/project/${projectId}/reports`, text: "Reports", icon: "fas fa-chart-pie" },
+    { link: `/project/${projectId}/test_suite`, text: "Test Run", icon: "fas fa-flask " }
+  ]
+
   useEffect(() => {
     getTicketData();
   }, []);
-  useEffect(() => {
-  }, [ticketData])
 
   async function getTicketData() {
     setBearer("Bearer " + (await getAccessTokenSilently()));
@@ -51,39 +54,30 @@ const Project = () => {
     <Loading />
   ) : (
     <Fragment>
-      <div className="container-fluid">
 
+      {/* <div className="container-fluid"> */}
+      <div className="row">
+        <div className="col-12 d-flex">
 
-        <NewTicket projectId={projectId} />
+          <SideNavDrawer links={reportLinks} />
 
-        <div className="row">
-          <div className="col-12">
-            <div className="d-flex justify-content-center align-times-center">
-              <input id="searchbar" type="text" placeholder="search" />
+          <div className="flex-grow-1 p-4">
+            <h1 className="mw-1000 m-auto">{projectName}</h1>
+            <div className="py-5 shadow text-center ">
+              <div className="d-flex">
+                <input className="my-3" id="search-bar" type="text" placeholder="Search" />
+
+              </div>
+              {
+                ticketData && ticketData.map(ticket => {
+                  return (<TicketCard key={ticket.ticketId} data={ticket} />)
+                })
+              }
             </div>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-12 d-flex justify-content-between align-items-center">
-            <div className="p-2">
-              <LargeHeader text={projectName} />
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-12 col-lg-3">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newtestmodal">CREATE TEST</button>
-          </div>
-          <div className="col-12 col-lg-9">
-            {
-              ticketData && ticketData.map(ticket => {
-                return (<TicketCard key={ticket.ticketId} data={ticket} />)
-              })
-            }
           </div>
         </div>
       </div>
+      {/* </div> */}
     </Fragment>
 
   );
