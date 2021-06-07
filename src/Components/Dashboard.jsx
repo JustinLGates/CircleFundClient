@@ -20,43 +20,42 @@ const Dashboard = ({ user }) => {
       console.log(error)
     }
   }
+  const handleCreateProject = (project) => {
+    setProjects([...projects, project])
+  }
 
   return (
     <fragment>
 
-      <div className="row pt-5 d-flex justify-content-around">
-        <div className="col-12 col-lg-7">
-          <div className="row">
-            <div className="col-12 shadow p-4">
-              <div className="p-4">
+      <div className="row pt-5">
+        <div className="col-lg-10 col-xl-9 col-12 m-auto">
+          <row>
+
+            <div className="col-12 m-auto">
+              <div className=" p-4  shadow">
                 <div className="d-flex justify-content-between">
                   <h2>Your Projects</h2>
                   <h2>Role</h2>
                 </div>
                 <hr />
-              </div>
-              {
-                projects && projects.map(project => {
-                  return (
-                    <div className="row">
-                      <div className="col-12 px-4" key={project.projectId}>
+                {
+                  projects && projects.map(project => {
+                    return (
+                      <div className="col-10 m-auto" key={project.projectId}>
                         <Link to={"projects/" + project.projectId} className="d-flex justify-content-between align-items-center highlight-on-hove">
                           <h4 className="p-1 m-0 d-inline text-dark">{project.name}</h4>
                           <h3 className="p-1 m-0 text-dark ">{project.role}</h3>
                         </Link>
                       </div>
-                    </div>
-                  )
+                    )
 
-                })
-              }
+                  })
+                }
+              </div>
             </div>
-          </div>
+            <NewProjectForm handleCreateProject={handleCreateProject} />
+          </row>
         </div>
-        <div className="col-12 col-lg-4">
-          <NewProjectForm />
-        </div>
-
       </div>
     </fragment>
   )

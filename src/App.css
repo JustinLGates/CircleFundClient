@@ -8,6 +8,48 @@
   min-height: 100vh;
 }
 
+.side-drawer {
+  
+}
+
+.collapsed-side-drawer {
+}
+
+.outline{
+outline:rgba(0, 0, 0, 0.103) solid 1px;
+}
+
+.mw-1000{
+  max-width: 1000px;
+}
+
+.ticket-card {
+  margin: auto;
+  max-width: 1000px;
+}
+
+form {
+  max-width: 1000px;
+}
+hr {
+  padding: .1rem
+}
+
+i {
+  font-size: x-large;
+  padding: .55rem .1rem
+}
+
+.tab{
+  height: 60px;
+  width: 60px; 
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 50%;
+  border-top-right-radius: 50%;
+}
+
 .action:hover {
   cursor: pointer;
 }
@@ -71,7 +113,7 @@ input{
   background-color: rgba(0, 0, 0, 0);
 }
 
-#searchbar{
+#search-bar{
   background-color: transparent;
   border-radius: 10px;
   max-width: 800px;

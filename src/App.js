@@ -2,16 +2,19 @@ import React from "react";
 import "./App.css";
 import { Nav } from "./Components/Nav";
 import { Route } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
+import { setBearer } from "./axios";
+import { resetBearer } from "./axios";
 import About from "./Pages/AboutPage";
 import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
 import Footer from "./Components/Footer";
 import ContactUs from "./Pages/Contactus";
 import Project from "./Pages/Project";
+import NewTicket  from "./Pages/NewTicket"
 import Ticket from "./Pages/Ticket";
-import { useAuth0 } from "@auth0/auth0-react";
-import { setBearer } from "./axios";
-import { resetBearer } from "./axios";
+import Reports from "./Pages/Reports"
+import TestSuites from "./Pages/TestSuites"
 
 function App() {
   //NOTE If the user is authenticated the beraer token will be set in axios and sent with all
@@ -31,12 +34,15 @@ function App() {
       <Nav />
       <div className="body container-fluid bg-light">
         <Route path="/" exact component={Home} />
-        <Route path="/profile" exact component={Profile} />
-        <Route path="/about" exact component={About} />
         <Route path="/home" exact component={Home} />
+        <Route path="/about" exact component={About} />
         <Route path="/contactus" exact component={ContactUs} />
-        <Route path="/project/:projectId/ticket/:ticketId" name="ticket" component={Ticket}/>
+        <Route path="/profile" exact component={Profile} />
         <Route path="/projects/:projectId" name="project" component={Project}/> 
+        <Route path="/project/:projectId/new/ticket" name="newTicket"  component={NewTicket}/>
+        <Route path="/project/:projectId/ticket/:ticketId" name="ticket" component={Ticket}/>
+        <Route path="/project/:projectId/test_suite" name="testSuite"  component={TestSuites}/>
+        <Route path="/project/:projectId/reports" name="reports"  component={Reports}/>
       </div>
       <Footer />
     </div>

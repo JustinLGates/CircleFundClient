@@ -1,6 +1,6 @@
 import React from "react";
 import { ButtonStyle } from "./ButtonStyle"
-const Button = ({ text, onclick, buttonStyle = "btn btn-success w-100", context = ButtonStyle.PRIMARY }) => {
+const Button = ({ disabled, text, onclick, buttonStyle = "btn btn-success w-100", context = ButtonStyle.PRIMARY }) => {
 
   const getStyle = () => {
     switch (context) {
@@ -14,7 +14,7 @@ const Button = ({ text, onclick, buttonStyle = "btn btn-success w-100", context 
   }
   return (
     <span>
-      <button onClick={onclick} className={buttonStyle}>{text}</button>
+      <button disabled={disabled} onClick={onclick} className={buttonStyle}>{text}</button>
     </span>
 
   );
