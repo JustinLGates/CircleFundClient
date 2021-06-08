@@ -6,7 +6,7 @@ const TicketCard = ({ data }) => {
   return (
     <Fragment>
       <div className="ticket-card my-2">
-        <Link to={`/project/${data.projectId}/ticket/${data.ticketId}`}>
+        <Link to={`/project/${data.projectId}/ticket/${data.id}`}>
           <div className="col-12">
             <div className="p-2 outline">
               <div className="d-flex align-items-center justify-content-between">

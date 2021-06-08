@@ -11,6 +11,8 @@ const Project = () => {
   const { projectId } = useParams();
   const { getAccessTokenSilently } = useAuth0();
   const [ticketData, setTicketData] = useState([]);
+  const [activeDataTicket, setActiveTicketData] = useState([]);
+  const [sortBy, setSortBy] = useState("priority");
   const [projectName, setProjectName] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -36,6 +38,7 @@ const Project = () => {
     try {
       let res = await api.get(`project/${projectId}/ticket`);
       setTicketData(res.data);
+      setActiveTicketData(res.data)
     } catch (error) {
       console.error(error);
     }
@@ -50,26 +53,31 @@ const Project = () => {
     }
   }
 
+  const filterTickets = (e) => {
+    ticketData.forEach(ticket => console.log(ticket.testName + " " + ticket.id))
+    let query = e.target.value
+    let tickets = ticketData.filter((ticket => ticket.testName.includes(query) || ticket.relatedFeature.includes(query)))
+    setActiveTicketData(tickets)
+  }
+
   return loading ? (
     <Loading />
   ) : (
     <Fragment>
 
-      {/* <div className="container-fluid"> */}
       <div className="row">
         <div className="col-12 d-flex">
 
           <SideNavDrawer links={reportLinks} />
 
-          <div className="flex-grow-1 p-4">
+          <div className="flex-grow-1 shadow main-content">
             <h1 className="mw-1000 m-auto">{projectName}</h1>
-            <div className="py-5 shadow text-center ">
-              <div className="d-flex">
-                <input className="my-3" id="search-bar" type="text" placeholder="Search" />
-
+            <div className="text-center ">
+              <div className="d-flex justify-content-center">
+                <input onChange={(e) => filterTickets(e)} className="m-3" id="search-bar" type="text" placeholder="Search by feature or test name" />
               </div>
               {
-                ticketData && ticketData.map(ticket => {
+                activeDataTicket && activeDataTicket.map(ticket => {
                   return (<TicketCard key={ticket.ticketId} data={ticket} />)
                 })
               }
@@ -77,7 +85,6 @@ const Project = () => {
           </div>
         </div>
       </div>
-      {/* </div> */}
     </Fragment>
 
   );

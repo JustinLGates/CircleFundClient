@@ -71,6 +71,7 @@ i {
 
 input{
   margin: 0px;
+  padding: .25rem;
     background-color: transparent;
     width: 100%;
     outline: none;
@@ -79,6 +80,11 @@ input{
     border-left: none;
     border-right: none;
     border-bottom: solid #313131e1 1px;
+}
+
+.main-content{
+  margin: 1.5rem;
+  padding: 1rem;
 }
 
 .text-grey{
@@ -91,7 +97,10 @@ input{
   align-items: center;
   padding: 1rem 2rem ;
 }
-
+.mx-2rem{
+  margin-right: 2rem;
+  margin-left: 2rem;
+}
 .form-element-container{
   padding: 1rem 2rem;
 }

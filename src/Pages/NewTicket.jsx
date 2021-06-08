@@ -80,7 +80,6 @@ const NewTicket = () => {
     setSetupArray(arr)
   }
 
-  // onClick={setSetupArray([setupArray.filter(item, i => i !== index)])}
   const addStep = (e) => {
     e.preventDefault()
     setStepsArray([...stepsArray, steps])

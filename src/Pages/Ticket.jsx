@@ -4,7 +4,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { api, setBearer } from "../axios";
 import Loading from "../Components/Loading";
 import SecondaryHeader from "../Components/SmallElements/SecondaryHeader"
-import TestInfoTab from '../Components/TestInfoTab'
+import SideNavDrawer from "../Components/SideNavDrawer"
+import LabeledInput from "../Components/Composites/LabeledInput"
+import Button from "../Components/SmallElements/Button/Button"
+import Label from '../Components/SmallElements/Label'
 
 const Ticket = () => {
 
@@ -15,8 +18,24 @@ const Ticket = () => {
   const [setupArray, setSetupArray] = useState([]);
   const [stepsArray, setStepsArray] = useState([]);
   const [verificationsArray, setVerificationsArray] = useState([]);
+  const [testName, setTestName] = useState("");
+  const [priorityLevel, setPriorityLevel] = useState("Undetermined");
+  const [assignedTo, setAssignedTo] = useState("");
+  const [setupStep, setSetupStep] = useState("");
+  const [steps, setSteps] = useState("");
+  const [status, setStatus] = useState("");
+  const [verifications, setVerifications] = useState("");
+  const [automate, setAutomate] = useState(true);
+  const [relatedFeature, setRelatedFeature] = useState("");
+  const [jiraTicket, setJiraTicket] = useState("");
+  const [designLink, setDesignLink] = useState("");
+
+  const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(true);
-  const [platformContext, setPlatformContext] = useState("iOS");
+
+  const reportLinks = [
+    { link: `/projects/${projectId}`, text: "Project", icon: "fas fa-arrow-circle-left" },
+  ]
 
   useEffect(() => {
     getTicketData();
@@ -25,7 +44,6 @@ const Ticket = () => {
   async function getTicketData() {
     setBearer("Bearer " + (await getAccessTokenSilently()));
     loadTicket();
-    setLoading(false);
   }
 
   const loadTicket = async () => {
@@ -38,74 +56,260 @@ const Ticket = () => {
     } catch (error) {
       console.error(error);
     }
+    setLoading(false);
+  }
+
+
+
+  let formData = {};
+
+  const handleSubmitForm = async (e) => {
+    e.preventDefault()
+
+    if (setupStep.length > 0) {
+      setupArray.push(setupStep)
+    }
+
+    if (steps.length > 0) {
+      stepsArray.push(steps)
+    }
+
+    if (verifications.length > 0) {
+      verificationsArray.push(verifications)
+    }
+
+    formData = {
+      testName: testName,
+      priorityLevel: priorityLevel,
+      assignedTo: assignedTo,
+      setup: setupArray.toString(),
+      steps: stepsArray.toString(),
+      verifications: verificationsArray.toString(),
+      status: "new",
+      automate: automate,
+      relatedFeature: relatedFeature,
+      jiraTicket: jiraTicket,
+      designLink: designLink,
+      notes: notes,
+    };
+    console.log(formData)
+    try {
+      let res = await api.put(`project/${projectId}/ticket`, formData);
+      console.log("create ticket response" + res.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const addSetupStep = (e) => {
+    e.preventDefault()
+    setSetupArray([...setupArray, setupStep])
+    setSetupStep("")
+  }
+
+  const removeSetupStep = (e, index) => {
+    e.preventDefault()
+    let arr = setupArray.filter((item, i) => i !== index)
+    setSetupArray(arr)
+  }
+
+  const addStep = (e) => {
+    e.preventDefault()
+    setStepsArray([...stepsArray, steps])
+    setSteps("")
+  }
+
+  const removeStep = (e, index) => {
+    e.preventDefault()
+    let arr = stepsArray.filter((item, i) => i !== index)
+    setStepsArray(arr)
+  }
+
+  const addVerification = (e) => {
+    e.preventDefault()
+    setVerificationsArray([...verificationsArray, verifications])
+    setVerifications("")
+  }
+
+  const removeVerification = (e, index) => {
+    e.preventDefault()
+    let arr = verificationsArray.filter((item, i) => i !== index)
+    setVerificationsArray(arr)
   }
 
 
   return loading ? (
     <Loading />
   ) : (
-    <Fragment>
-      <div className="container-fluid p-5">
-        <div className="row">
-          <div className="col-12">
-            <div className="d-flex justify-content-between">
-              <h1 className="d-inline">Test: {ticketData.testName}</h1>
-              <h3 className="d-inline">Priotiry: {ticketData.priorityLevel || "N/A"}
-                <span className="px-3">
+    <div className="row">
+      <div className="col-12 d-flex">
 
-                  <i class={ticketData.priorityLevel === "High" ? "fas fa-angle-double-up text-danger" : ticketData.priorityLevel === "Medium" ? "fas fa-angle-up text-danger " : ticketData.priorityLevel === "Undetermined" ? "fas fa-minus text-warning" : ticketData.priorityLevel === "Low" ? "fas fa-angle-down text-success" : "fas fa-angle-double-down text-success"}></i>
-                </span>
-              </h3>
+        <SideNavDrawer links={reportLinks} />
+
+        <form className="p-5 flex-grow-1 m-auto">
+          <LabeledInput inputValue={ticketData.testName} name={testName} onChange={(e) => setTestName(e.target.value)} />
+
+          <div className="d-flex">
+            <div className="flex-grow-1">
+              <LabeledInput className="pr-2"
+                inputValue={setupStep}
+                name={"setup Step"}
+                labelText="Setup"
+                onChange={(e) => setSetupStep(e.target.value)} />
             </div>
 
+            <span className="p-1 mr-1">
+              <button title="Add setup step" className=" btn btn-success mr-4" onClick={addSetupStep}><i className="fa fa-plus"></i></button>
+            </span>
           </div>
-          <div className="col-12">
+          {
+            setupArray.map((item, index) =>
+              <div key={index} className="d-flex">
+                <div className="flex-grow-1 labeled-input pl-5">
+                  <Label text={`${index + 1}. ${item}`}></Label>
+                </div>
 
-            <SecondaryHeader text="Setup:" />
-            {
-              setupArray.map((item, index) => {
-                return (<p className="pl-5" key={index}>{index + 1}. {item}</p>)
-              })
-            }
-            <SecondaryHeader text="Steps:" />
-            {
-              stepsArray.map((item, index) => {
-                return (<p className="pl-5" key={index}>{index + 1}. {item}</p>)
-              })
-            }
-            <SecondaryHeader text="Verifications:" />
-            {
-              verificationsArray.map((item, index) => {
-                return (<p className="pl-5" key={index}>{index + 1}. {item}</p>)
-              })
-            }
+                <span className="p-1 mr-1">
+                  <button title="Add setup step" className=" btn btn-danger mr-4" onClick={e => removeSetupStep(e, index)} ><i className="fa fa-minus"></i></button>
+                </span>
+              </div>
+            )
+          }
+          {setupStep.length > 0 ? (
+            <div className="labeled-input py- pl-5">
+              <Label text={`${setupArray.length + 1}. ${setupStep}`} />
+            </div>)
+            : (<></>)
+          }
+
+          <div className="d-flex">
+            <div className="flex-grow-1">
+              <LabeledInput className="pr-2"
+                inputValue={steps}
+                name={"steps"}
+                labelText="Steps"
+                onChange={(e) => setSteps(e.target.value)} />
+            </div>
+
+            <span className="p-1 mr-1">
+              <button title="Add step" className="btn btn-success mr-4" onClick={addStep}><i className="fa fa-plus"></i></button>
+            </span>
           </div>
-        </div>
+          {
+            stepsArray.map((item, index) =>
+              <div key={index} className="d-flex">
+                <div className="flex-grow-1 labeled-input pl-5">
+                  <Label text={`${index + 1}. ${item}`}></Label>
+                </div>
+                <span className="p-1 mr-1">
+                  <button title="Remove step" className=" btn btn-danger mr-4" onClick={e => removeStep(e, index)} ><i className="fa fa-minus"></i></button>
+                </span>
+              </div>
+            )
+          }
+          {steps.length > 0 ? (
+            <div className="labeled-input py- pl-5">
+              <Label text={`${stepsArray.length + 1}. ${steps}`} />
+            </div>)
+            : (<></>)
+          }
 
-        <div className="row">
-          <div className="col-12">
+          <div className="d-flex">
+            <div className="flex-grow-1">
+              <LabeledInput className="pr-2"
+                inputValue={verifications}
+                name={"verification"}
+                labelText="Verification"
+                onChange={(e) => setVerifications(e.target.value)} />
+            </div>
 
+            <span className="p-1 mr-1">
+              <button title="Add setup step" className=" btn btn-success mr-4" onClick={addVerification}><i className="fa fa-plus"></i></button>
+            </span>
+          </div>
+          {
+            verificationsArray.map((item, index) =>
+              <div key={index} className="d-flex">
+                <div className="flex-grow-1 labeled-input pl-5">
+                  <Label text={`${index + 1}. ${item}`}></Label>
+                </div>
+                <span className="p-1 mr-1">
+                  <button title="Add setup step" className=" btn btn-danger mr-4" onClick={e => removeVerification(e, index)} ><i className="fa fa-minus"></i></button>
+                </span>
+              </div>
+            )
+          }
+          {verifications.length > 0 ? (
+            <div className="labeled-input py- pl-5">
+              <Label text={`${verificationsArray.length + 1}. ${verifications}`} />
+            </div>)
+            : (<></>)
+          }
+
+          <LabeledInput inputValue={ticketData.jiraTicket} name={jiraTicket} labelText={"Jira ticket"} onChange={(e) => setJiraTicket(e.target.value)} />
+          <LabeledInput inputValue={ticketData.designLink} name={designLink} labelText={"Design Link"} onChange={(e) => setJiraTicket(e.target.value)} />
+          <LabeledInput inputValue={ticketData.relatedFeature} name={relatedFeature} labelText={"Related Feature"} onChange={(e) => setRelatedFeature(e.target.value)} />
+          <div className="form-element-container d-flex justify-content-between align-items-center">
             <div className="d-flex align-items-center">
-              <span>
-                <a className={platformContext === "iOS" ? "p-1 mx-2 badge-primary text-light badge action" : "p-1 mx-2 bg-light text-primary badge action"} onClick={() => setPlatformContext("iOS")}>iOS</a> |
-                </span>
-              <span>
-                <a className={platformContext === "Android" ? "p-1 mx-2 badge-primary text-light badge action" : "p-1 mx-2 bg-light text-primary badge action"} onClick={() => setPlatformContext("Android")}>Android </a> |
-                </span>
-              <span>
-                <a className={platformContext === "Web" ? "p-1 mx-2 badge-primary text-light badge action" : "p-1 mx-2 bg-light text-primary badge action"} onClick={() => setPlatformContext("Web")}>Web </a>
-              </span>
-              <hr />
+              <label className="switch-label">Automate</label>
+              <div className="d-inline-flex">
+                <label class="switch">
+                  <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => setAutomate(e.target.checked)} />
+                  <span class="slider round"></span>
+                </label>
+              </div>
             </div>
-
-            <h2>{platformContext}  Details </h2>
-
-            <TestInfoTab ticketData={ticketData} platform={platformContext} />
           </div>
-        </div>
-      </div>
-    </Fragment>
 
+          <div className="form-element-container">
+            <span className="">
+              <Label text={"Priority"} />
+            </span>
+
+            <select onChange={(e) => setPriorityLevel(e.target.value)} class="form-select" aria-label="Select automation priority">
+              <option default >Undetermined</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+              <option value="Backlog">Backlog</option>
+            </select>
+          </div>
+
+          <div className="form-element-container">
+            <span className="">
+              <Label text={"Status"} />
+            </span>
+
+            <select onChange={(e) => setStatus(e.target.value)} class="form-select" aria-label="Select automation status">
+              <option default value="new" >New</option>
+              <option value="blocked">Blocked</option>
+              <option value="complete">Complete</option>
+              <option value="unable">Unable</option>
+              <option value="invalid">Invalid</option>
+            </select>
+          </div>
+
+          <div className="form-element-container">
+            <span className="">
+              <Label text={"Assigned To"} />
+            </span>
+
+            <select onChange={(e) => setAssignedTo(e.target.value)} class="form-select" aria-label="Select assign to">
+              <option default value="Add names" >Static names</option>
+              <option value="joe">Blocked</option>
+              <option value="bob">Complete</option>
+              <option value="bill">Unable</option>
+              <option value="jim">Invalid</option>
+            </select>
+          </div>
+
+          <div className="d-flex flex-column mx-2rem">
+            <label classname="" htmlFor={notes}>Notes</label>
+            <textarea className="" cols="8" name={notes} onChange={(e) => setNotes(e.target.value)} />
+          </div>
+        </form>
+      </div>
+    </div >
   );
 };
 
