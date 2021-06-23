@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom"
 import { useAuth0 } from "@auth0/auth0-react";
 import { api, setBearer } from "../axios";
 import Loading from "../Components/Loading";
-import SecondaryHeader from "../Components/SmallElements/SecondaryHeader"
+import EditText from "../Components/Composites/EditText"
 import SideNavDrawer from "../Components/SideNavDrawer"
 import LabeledInput from "../Components/Composites/LabeledInput"
 import Button from "../Components/SmallElements/Button/Button"
@@ -29,7 +29,6 @@ const Ticket = () => {
   const [relatedFeature, setRelatedFeature] = useState("");
   const [jiraTicket, setJiraTicket] = useState("");
   const [designLink, setDesignLink] = useState("");
-
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -46,13 +45,28 @@ const Ticket = () => {
     loadTicket();
   }
 
+  const editTestName = async (value) => {
+    setTestName(value)
+  }
+
+  const handelEditRequest = async () => {
+    sendEditTicketRequest()
+  }
+
   const loadTicket = async () => {
     try {
       let res = await api.get(`project/${projectId}/ticket/${ticketId}`);
       setSetupArray(res.data.setup.split(","))
       setStepsArray(res.data.steps.split(","))
       setVerificationsArray(res.data.verifications.split(","))
-      setTicketData(res.data);
+      setPriorityLevel(res.data.priorityLevel);
+      setRelatedFeature(res.data.relatedFeature);
+      setStatus(res.data.status);
+      setJiraTicket(res.data.jiraTicket)
+      setDesignLink(res.data.designLink)
+      setAssignedTo
+      setTestName(res.data.testName);
+
     } catch (error) {
       console.error(error);
     }
@@ -64,8 +78,14 @@ const Ticket = () => {
   let formData = {};
 
   const handleSubmitForm = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
+    sendEditTicketRequest();
+  };
 
+  const sendEditTicketRequest = (e = null) => {
+    if (e != null) {
+      e.preventDefault();
+    }
     if (setupStep.length > 0) {
       setupArray.push(setupStep)
     }
@@ -79,27 +99,26 @@ const Ticket = () => {
     }
 
     formData = {
-      testName: testName,
-      priorityLevel: priorityLevel,
-      assignedTo: assignedTo,
-      setup: setupArray.toString(),
-      steps: stepsArray.toString(),
-      verifications: verificationsArray.toString(),
-      status: "new",
+      testName: testName || "",
+      priorityLevel: priorityLevel || "undetermined",
+      assignedTo: assignedTo || "unassigned",
+      setup: setupArray.toString() || "",
+      steps: stepsArray.toString() || "",
+      verifications: verificationsArray.toString() || "",
+      status: status || "new",
       automate: automate,
-      relatedFeature: relatedFeature,
-      jiraTicket: jiraTicket,
-      designLink: designLink,
-      notes: notes,
+      relatedFeature: relatedFeature || "",
+      jiraTicket: jiraTicket || "",
+      designLink: designLink || "",
+      notes: notes || "",
     };
-    console.log(formData)
+
     try {
-      let res = await api.put(`project/${projectId}/ticket`, formData);
-      console.log("create ticket response" + res.data);
+      api.put(`project/${projectId}/ticket/${ticketId}`, formData);
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
   const addSetupStep = (e) => {
     e.preventDefault()
@@ -141,13 +160,15 @@ const Ticket = () => {
   return loading ? (
     <Loading />
   ) : (
+
     <div className="row">
       <div className="col-12 d-flex">
 
         <SideNavDrawer links={reportLinks} />
 
-        <form className="p-5 flex-grow-1 m-auto">
-          <LabeledInput inputValue={ticketData.testName} name={testName} onChange={(e) => setTestName(e.target.value)} />
+        <form className="p-5 flex-grow-1 m-auto ">
+          <EditText inputValue={testName} save={handelEditRequest}
+            name={testName} labelText={"Test Name: "} onChange={(e) => editTestName(e.target.value)} />
 
           <div className="d-flex">
             <div className="flex-grow-1">
@@ -254,7 +275,7 @@ const Ticket = () => {
               <label className="switch-label">Automate</label>
               <div className="d-inline-flex">
                 <label class="switch">
-                  <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => setAutomate(e.target.checked)} />
+                  <input name="chk" type="checkbox" defaultChecked={ticketData.automate} onChange={(e) => setAutomate(e.target.checked)} />
                   <span class="slider round"></span>
                 </label>
               </div>
@@ -296,9 +317,9 @@ const Ticket = () => {
 
             <select onChange={(e) => setAssignedTo(e.target.value)} class="form-select" aria-label="Select assign to">
               <option default value="Add names" >Static names</option>
-              <option value="joe">Blocked</option>
-              <option value="bob">Complete</option>
-              <option value="bill">Unable</option>
+              <option value="joe">joe</option>
+              <option value="bob">bob</option>
+              <option value="bill">bill</option>
               <option value="jim">Invalid</option>
             </select>
           </div>
@@ -306,6 +327,11 @@ const Ticket = () => {
           <div className="d-flex flex-column mx-2rem">
             <label classname="" htmlFor={notes}>Notes</label>
             <textarea className="" cols="8" name={notes} onChange={(e) => setNotes(e.target.value)} />
+          </div>
+          <div className="px-5 mx-5 pt-3">
+            <div class="modal-footer">
+              <Button text={"Update"} onclick={handleSubmitForm} />
+            </div>
           </div>
         </form>
       </div>
