@@ -51,7 +51,7 @@ const Profile = () => {
         </div>
         <div className="row">
           <div className="col-12">
-            <Dashboard user={user} />
+            <Dashboard profileData={profileData} />
           </div>
         </div>
       </Fragment>

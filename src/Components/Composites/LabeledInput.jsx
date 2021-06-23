@@ -5,6 +5,7 @@ import Label from "../SmallElements/Label"
 
 const LabeledInput = ({ inputValue, name, labelText, inputText, inputPlaceholder, onChange }) => {
 
+
   return (
     <div className="labeled-input">
       <Label text={labelText} />

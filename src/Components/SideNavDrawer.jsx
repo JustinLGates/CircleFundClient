@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const SideNavDrawer = ({ links }) => {
-  const [sideDrawerCollapsed, setSideDrawerCollapsed] = useState(true)
+  const [sideDrawerCollapsed, setSideDrawerCollapsed] = useState(false)
   return (
     <div className="py-3 my-4 text-dark shadow">
       <div className={sideDrawerCollapsed ? "side-drawer" : "collapsed-side-drawer"} >
@@ -14,7 +14,7 @@ const SideNavDrawer = ({ links }) => {
             </div>
             :
             <div className="d-flex justify-content-center action" onClick={() => setSideDrawerCollapsed(!sideDrawerCollapsed)}>
-              <h3 className="d-inline text-dark"><i class="fas fa-ellipsis-h"></i></h3>
+              <h3 className="d-inline text-dark"><i className="fas fa-ellipsis-h"></i></h3>
             </div>
         }
         <hr className="bg-secondary m-0 mx-2 " />

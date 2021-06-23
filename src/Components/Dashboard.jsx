@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { api } from "../axios";
 import NewProjectForm from "./NewProjectForm";
 
-const Dashboard = ({ user }) => {
+const Dashboard = ({ profileData }) => {
 
   const [projects, setProjects] = useState([])
   useEffect(() => {

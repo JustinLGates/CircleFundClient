@@ -64,7 +64,6 @@ const Ticket = () => {
       setStatus(res.data.status);
       setJiraTicket(res.data.jiraTicket)
       setDesignLink(res.data.designLink)
-      setAssignedTo
       setTestName(res.data.testName);
 
     } catch (error) {

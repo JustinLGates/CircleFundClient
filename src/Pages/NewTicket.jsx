@@ -1,33 +1,52 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SideNavDrawer from "../Components/SideNavDrawer"
 import { useParams } from "react-router-dom"
-import { api } from "../axios";
 import LabeledInput from "../Components/Composites/LabeledInput"
 import Button from "../Components/SmallElements/Button/Button"
 import Label from '../Components/SmallElements/Label'
+import { api, setBearer } from "../axios";
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 const NewTicket = () => {
+
+  const { getAccessTokenSilently } = useAuth0();
+
+  useEffect(() => {
+    getProject();
+  }, []);
 
   const { projectId } = useParams();
   const reportLinks = [{ link: `/projects/${projectId}`, text: "Project", icon: "fas fa-arrow-circle-left" }]
 
+  // STATE --------------------------------------------------------------------------------------------------------------------------------------
   const [testName, setTestName] = useState("");
   const [priorityLevel, setPriorityLevel] = useState("Undetermined");
-  const [assignedTo, setAssignedTo] = useState("");
   const [setupStep, setSetupStep] = useState("");
   const [setupArray, setSetupArray] = useState([]);
   const [steps, setSteps] = useState("");
   const [stepsArray, setStepsArray] = useState([]);
   const [verifications, setVerifications] = useState("");
   const [verificationsArray, setVerificationsArray] = useState([]);
-  const [automate, setAutomate] = useState(true);
   const [relatedFeature, setRelatedFeature] = useState("");
   const [jiraTicket, setJiraTicket] = useState("");
   const [designLink, setDesignLink] = useState("");
-
+  const [automate, setAutomate] = useState(true);
+  const [createForIos, setCreateForIos] = useState(true);
+  const [createForAndroid, setCreateForAndroid] = useState(true);
+  const [createForWeb, setCreateForWeb] = useState(true);
   const [notes, setNotes] = useState("");
 
   let formData = {};
+
+  const getProject = async () => {
+    setBearer("Bearer " + (await getAccessTokenSilently()));
+    try {
+      await api.get(`project/${projectId}`);
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const handleSubmitForm = async (e) => {
     e.preventDefault()
@@ -47,26 +66,48 @@ const NewTicket = () => {
     formData = {
       testName: testName,
       priorityLevel: priorityLevel,
-      assignedTo: assignedTo,
       setup: setupArray.toString(),
       steps: stepsArray.toString(),
       verifications: verificationsArray.toString(),
       status: "new",
-      ticketNumber: 1,
+      assignedto: "undetermined",
       automate: automate,
       relatedFeature: relatedFeature,
       jiraTicket: jiraTicket,
       designLink: designLink,
-      notes: notes,
+      notes: notes
     };
-    console.log(formData)
+
+    if (createForAndroid) {
+      await createTicket("android")
+    }
+
+    if (createForIos) {
+      await createTicket("ios")
+    }
+
+    if (createForWeb) {
+      await createTicket("web")
+    }
+    await updateTicketNumber()
+  };
+
+  async function createTicket(platform) {
+    formData.platform = platform
     try {
-      let res = await api.post(`project/${projectId}/ticket`, formData);
-      console.log("create ticket response" + res.data);
+      api.post(`project/${projectId}/ticket`, formData);
     } catch (error) {
       console.error(error);
     }
-  };
+  }
+
+  async function updateTicketNumber() {
+    try {
+      api.put(`project/${projectId}/updateTicketTotal`);
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const addSetupStep = (e) => {
     e.preventDefault()
@@ -214,7 +255,7 @@ const NewTicket = () => {
           }
 
           <LabeledInput name={jiraTicket} labelText={"Jira ticket"} onChange={(e) => setJiraTicket(e.target.value)} />
-          <LabeledInput name={designLink} labelText={"Design Link"} onChange={(e) => setJiraTicket(e.target.value)} />
+          <LabeledInput name={designLink} labelText={"Design Link"} onChange={(e) => setDesignLink(e.target.value)} />
           <LabeledInput name={relatedFeature} labelText={"Related Feature"} onChange={(e) => setRelatedFeature(e.target.value)} />
           <LabeledInput name={notes} labelText={"Notes"} onChange={(e) => setNotes(e.target.value)} />
 
@@ -230,31 +271,91 @@ const NewTicket = () => {
               </div>
             </div>
           </div>
-          {
-            automate ? (
-              <div>
-                <div className="form-element-container">
-                  <Label text={"Automation Priority"} />
-                  <select onChange={(e) => setPriorityLevel(e.target.value)} class="form-select" aria-label="Select automation priority">
-                    <option default >Undetermined</option>
-                    <option value="High">High</option>
-                    <option value="Medium">Medium</option>
-                    <option value="Low">Low</option>
-                    <option value="Backlog">Backlog</option>
-                  </select>
-                </div>
-                <LabeledInput name={assignedTo} labelText={"Assign to"} onChange={(e) => setAssignedTo(e.target.value)} />
-              </div>
-            ) : (<></>)
-          }
-          <div className="px-5 mx-5 pt-3">
-            <div class="modal-footer">
-              <Button text={"Create"} onclick={handleSubmitForm} />
+          <div>
+            <div className="form-element-container">
+              <Label text={"Automation Priority"} />
+              <select onChange={(e) => setPriorityLevel(e.target.value)} class="form-select" aria-label="Select automation priority">
+                <option default >Undetermined</option>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+                <option value="Backlog">Backlog</option>
+              </select>
             </div>
           </div>
+
+
+          <div className="row boxed-2 mt-4">
+            <div className="col-12 p-3">
+              <h2>Create For</h2>
+              <div className="d-flex justify-content-between py-3 row">
+
+                <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
+                  <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
+                    <div className="text-center">
+                      <label className="px-2">Web</label>
+                      <div className="d-flex align-items-center">
+                        <i class="fas fa-desktop px-2"></i>
+                        <div className="d-inline-flex px-2">
+                          <label class="switch">
+                            <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => setCreateForWeb(e.target.checked)} />
+                            <span class="slider round"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
+                  <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
+                    <div className="text-center">
+                      <label className="px-2">Android</label>
+                      <div className="d-flex align-items-center">
+                        <i class="fab fa-android px-2"></i>
+                        <div className="d-inline-flex px-2">
+                          <label class="switch">
+                            <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => setCreateForAndroid(e.target.checked)} />
+                            <span class="slider round"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
+                  <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
+                    <div className="text-center">
+                      <label className="px-2">iOS</label>
+                      <div className="d-flex align-items-center">
+                        <i class="fab fa-apple px-2"></i>
+                        <div className="d-inline-flex px-2">
+                          <label class="switch">
+                            <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => setCreateForIos(e.target.checked)} />
+                            <span class="slider round"></span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col">
+              <div className="px-5 mx-5 pt-3">
+                <div class="boxed text-center">
+                  <Button text={"Create"} onclick={handleSubmitForm} />
+                </div>
+              </div>
+            </div>
+          </div>
+
         </form>
-
-
       </div>
     </div>
   );
