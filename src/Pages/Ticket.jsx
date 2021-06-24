@@ -7,7 +7,8 @@ import EditText from "../Components/Composites/EditText"
 import SideNavDrawer from "../Components/SideNavDrawer"
 import LabeledInput from "../Components/Composites/LabeledInput"
 import Button from "../Components/SmallElements/Button/Button"
-import Label from '../Components/SmallElements/Label'
+import Label from "../Components/SmallElements/Label"
+import EditMultiText from "../Components/Composites/EditMulitext"
 
 const Ticket = () => {
 
@@ -71,8 +72,6 @@ const Ticket = () => {
     }
     setLoading(false);
   }
-
-
 
   let formData = {};
 
@@ -168,6 +167,9 @@ const Ticket = () => {
         <form className="p-5 flex-grow-1 m-auto ">
           <EditText inputValue={testName} save={handelEditRequest}
             name={testName} labelText={"Test Name: "} onChange={(e) => editTestName(e.target.value)} />
+
+          <EditMultiText inputValue={testName} save={handelEditRequest}
+            name={testName} labelText={"Test Name: "} onAdd={addSetupStep} onRemove={removeSetupStep} onChange={(e) => setSetupStep(e.target.value)} />
 
           <div className="d-flex">
             <div className="flex-grow-1">
