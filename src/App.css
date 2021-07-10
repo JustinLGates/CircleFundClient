@@ -141,6 +141,24 @@ input{
   background-color: rgba(0, 0, 0, 0);
 }
 
+.hero-container {
+  height: 65vh;
+  top:1rem;
+  position: relative;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  margin: 0px -15px;
+}
+
+.hero-img {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+
+}
+
 #search-bar{
   background-color: transparent;
   border-radius: 10px;

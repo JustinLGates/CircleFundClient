@@ -45,7 +45,8 @@ const Profile = () => {
         <div className="row">
           <div className="col-12 d-flex justify-content-between align-items-center">
             <div className="p-2">
-              <img className="profile-pic" src={user.picture} alt={user.nickName} />
+              <img className="profile-pic" src={user.picture} />
+              <p>{user.nickname}</p>
             </div>
           </div>
         </div>

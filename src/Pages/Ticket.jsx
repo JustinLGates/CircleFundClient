@@ -168,8 +168,8 @@ const Ticket = () => {
           <EditText inputValue={testName} save={handelEditRequest}
             name={testName} labelText={"Test Name: "} onChange={(e) => editTestName(e.target.value)} />
 
-          <EditMultiText inputValue={testName} save={handelEditRequest}
-            name={testName} labelText={"Test Name: "} onAdd={addSetupStep} onRemove={removeSetupStep} onChange={(e) => setSetupStep(e.target.value)} />
+          {/* <EditMultiText inputValue={testName} save={handelEditRequest}
+            name={testName} labelText={"Test Name: "} onAdd={addSetupStep} onRemove={removeSetupStep} onChange={(e) => setSetupStep(e.target.value)} /> */}
 
           <div className="d-flex">
             <div className="flex-grow-1">

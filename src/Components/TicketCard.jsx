@@ -13,7 +13,8 @@ const TicketCard = ({ data }) => {
                 <CardHeader text={data.testName} />
                 <div className="d-flex flex-column">
                   <div>
-                    <label>{data.testNumber}</label>
+                    <label className="px-4">Platform: {data.platform}</label>
+                    <label>Test number: {data.testNumber}</label>
                   </div>
                   <div>
                     <label className="d-inline">{data.priorityLevel}</label>
