@@ -7,7 +7,7 @@ const TicketCard = ({ data }) => {
     <Fragment>
       <div className="ticket-card my-2">
         <Link to={`/project/${data.projectId}/ticket/${data.id}`}>
-          <div className="col-12">
+          <div className="col-12 p-0">
             <div className="p-2 outline">
               <div className="d-flex align-items-center justify-content-between">
                 <CardHeader text={data.testName} />
@@ -19,7 +19,7 @@ const TicketCard = ({ data }) => {
                   <div>
                     <label className="d-inline">{data.priorityLevel}</label>
                     <span className="px-3">
-                      <i class={data.priorityLevel === "High" ? "fas fa-angle-double-up text-danger" : data.priorityLevel === "Medium" ? "fas fa-angle-up text-danger " : data.priorityLevel === "Undetermined" ? "fas fa-minus text-warning" : data.priorityLevel === "Low" ? "fas fa-angle-down text-success" : "fas fa-angle-double-down text-success"}></i>
+                      <i className={data.priorityLevel === "High" ? "fas fa-angle-double-up text-danger" : data.priorityLevel === "Medium" ? "fas fa-angle-up text-danger " : data.priorityLevel === "Undetermined" ? "fas fa-minus text-warning" : data.priorityLevel === "Low" ? "fas fa-angle-down text-success" : "fas fa-angle-double-down text-success"}></i>
                     </span>
                   </div>
                 </div>

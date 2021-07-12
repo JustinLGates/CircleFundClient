@@ -66,7 +66,7 @@ const ManageContributors = () => {
         <div className="p-4">
           <div>
             <h2>Manage Contributors</h2>
-            <label >Users Email</label>
+            <label >User id token</label> <small className="text-grey pl-5">on Profile page</small>
             <input onChange={(e) => setContributorEmail(e.target.value)} type="text" placeholder="Users Id" />
             {
               contributorEmail === undefined ? // TODO add verifications that this is a valid email.
@@ -83,7 +83,7 @@ const ManageContributors = () => {
 
                     <div className="p-2 px-2 outline m-0 d-flex justify-content-between align-items-center">
                       <label key={data.userId}>{data.contributorName}</label>
-                      <button className="btn btn-danger" onClick={(e) => deleteContributor(e, data.userId)} >Delete</button>
+                      <button className="btn btn-danger" onClick={(e) => deleteContributor(e, data.userId)} >Remove contributor</button>
                     </div>
                   </div>
 

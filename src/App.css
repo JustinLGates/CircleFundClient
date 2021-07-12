@@ -8,13 +8,6 @@
   min-height: 100vh;
 }
 
-.side-drawer {
-  
-}
-
-.collapsed-side-drawer {
-}
-
 .outline{
 outline:rgba(0, 0, 0, 0.103) solid 1px;
 }
@@ -24,8 +17,15 @@ outline:rgba(0, 0, 0, 0.103) solid 1px;
 }
 
 .ticket-card {
+  transition: 500ms;
   margin: auto;
   max-width: 1000px;
+}
+
+.ticket-card:hover {
+  transition: 400ms;
+  box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 4px, rgba(0, 0, 0, 0.15) 4px 4px 6px;
+  background-color: rgba(0, 0, 0, 0.019);
 }
 
 form {
@@ -129,6 +129,16 @@ input{
 
 .underline {
   border-bottom: solid 1px darkslategrey;
+}
+.highlight {
+transition: 400ms;
+}
+
+.highlight:hover{
+transition: 400ms;
+box-shadow: rgba(0, 0, 0, 0.3) 2px 2px 4px, rgba(0, 0, 0, 0.15) 4px 4px 6px;
+background-color: rgba(0, 0, 0, 0.019);
+
 }
 
 .highlight-on-hover:hover{

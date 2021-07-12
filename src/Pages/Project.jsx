@@ -12,7 +12,12 @@ const Project = () => {
   const { getAccessTokenSilently } = useAuth0();
   const [ticketData, setTicketData] = useState([]);
   const [activeDataTicket, setActiveTicketData] = useState([]);
-  const [sortBy, setSortBy] = useState("priority");
+
+  const [includesIos, setIncludesIos] = useState(true);
+  const [includesAndroid, setIncludesAndroid] = useState(true);
+  const [includesWeb, setIncludesWeb] = useState(true);
+  const [query, setQuery] = useState("");
+
   const [projectName, setProjectName] = useState();
   const [loading, setLoading] = useState(true);
 
@@ -21,7 +26,7 @@ const Project = () => {
     { link: `/project/${projectId}/new/ticket`, text: "New Test", icon: "fa fa-plus-circle " },
     { link: `/project/${projectId}/reports`, text: "Reports", icon: "fas fa-chart-pie" },
     { link: `/project/${projectId}/testSuite`, text: "Test Run", icon: "fas fa-flask" },
-    { link: `/project/${projectId}/manageContributors`, text: "Test Run", icon: "fas fa-users" }
+    { link: `/project/${projectId}/manageContributors`, text: "Contributors", icon: "fas fa-users" }
 
   ]
 
@@ -56,11 +61,68 @@ const Project = () => {
   }
 
   const filterTickets = (e) => {
-    ticketData.forEach(ticket => console.log(ticket.testName + " " + ticket.id))
     let query = e.target.value
-    let tickets = ticketData.filter((ticket => ticket.testName.includes(query) || ticket.relatedFeature.includes(query)))
+    setQuery(query)
+    let tickets = filterTicketsQuery(ticketData, query)
+
+    if (!includesAndroid) {
+      tickets = filterTicketsPlatform(tickets, "android")
+    }
+
+    if (!includesIos) {
+      tickets = filterTicketsPlatform(tickets, "ios")
+    }
+
+    if (!includesWeb) {
+      tickets = filterTicketsPlatform(tickets, "web")
+    }
+
     setActiveTicketData(tickets)
   }
+
+  const filterTicketsByPlatform = (e, platform) => {
+    let tickets = activeDataTicket
+    switch (platform) {
+      case "ios":
+        setIncludesIos(e.target.checked)
+        break
+      case "android":
+        setIncludesAndroid(e.target.checked)
+        break
+      case "web":
+        setIncludesWeb(e.target.checked)
+        break
+      default:
+        break;
+    }
+    console.log(tickets)
+    console.log(e.target.checked)
+
+    if (!e.target.checked) {
+      tickets = tickets.filter(ticket => ticket.platform !== platform)
+    }
+
+    if (e.target.checked) {
+      tickets = [...tickets,
+      ...ticketData.filter(ticket => ticket.platform === platform),
+      ]
+    }
+
+    if (query.length > 0) {
+      tickets = filterTicketsQuery(tickets, query)
+    }
+    setActiveTicketData(tickets)
+  }
+
+  const filterTicketsPlatform = (tickets, platform) => {
+    return tickets.filter(ticket => ticket.platform !== platform)
+  }
+
+  const filterTicketsQuery = (tickets, query) => {
+    return tickets.filter((ticket => ticket.testName.includes(query) || ticket.relatedFeature.includes(query)))
+  }
+
+
 
   return loading ? (
     <Loading />
@@ -72,22 +134,113 @@ const Project = () => {
 
           <SideNavDrawer links={reportLinks} />
 
-          <div className="flex-grow-1 shadow main-content">
-            <h1 className="mw-1000 m-auto">{projectName}</h1>
-            <div className="text-center ">
-              <div className="d-flex justify-content-center">
-                <input onChange={(e) => filterTickets(e)} className="m-3" id="search-bar" type="text" placeholder="Search by feature or test name" />
+          <div className={"flex-grow-1 main-content"}>:
+
+            <div className="px-lg-5 mx-lg-5">
+
+              <h1 className="m-auto">{projectName}</h1>
+              <div className="text-center shadow my-4 py-5 px-2 px-lg-3">
+                <div className="row">
+
+                  <div className="col-12">
+                    <input onChange={(e) => filterTickets(e)} className="" id="search-bar" type="text" placeholder="Search by feature or test name" />
+                  </div>
+                  <div className="d-flex justify-content-between">
+                    {/* 
+                     
+                    */}
+
+                    <div className="col-12">
+
+                      <div className="row mt-3">
+                        <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
+                          <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
+                            <div className="text-center">
+                              <label className="px-2">Web</label>
+                              <div className="d-flex align-items-center">
+                                <i className="fas fa-desktop px-2"></i>
+                                <div className="d-inline-flex px-2">
+                                  <label className="switch">
+                                    <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => filterTicketsByPlatform(e, "web")} />
+                                    <span className="slider round"></span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
+                          <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
+                            <div className="text-center">
+                              <label className="px-2">Android</label>
+                              <div className="d-flex align-items-center">
+                                <i className="fab fa-android px-2"></i>
+                                <div className="d-inline-flex px-2">
+                                  <label className="switch">
+                                    <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => filterTicketsByPlatform(e, "android")} />
+                                    <span className="slider round"></span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
+                          <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
+                            <div className="text-center">
+                              <label className="px-2">iOS</label>
+                              <div className="d-flex align-items-center">
+                                <i className="fab fa-apple px-2"></i>
+                                <div className="d-inline-flex px-2">
+                                  <label className="switch">
+                                    <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => filterTicketsByPlatform(e, "ios")} />
+                                    <span className="slider round"></span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      {/* 
+                    */}
+                    </div>
+                  </div>
+                </div>
+
+
+
+                {activeDataTicket.length > 0 ? <></> :
+                  ticketData.length > 0 ?
+                    <div className="d-flex justify-content-center align-items-center">
+                      <h3>
+                        No Search results were found.
+                      </h3>
+                    </div>
+                    :
+                    <div className="d-flex justify-content-center align-items-center">
+                      <h3>
+                        You Have not created any tests yet check out the side navigation drawer to create your first test case.
+                      </h3>
+                    </div>
+
+                }
+                {
+                  activeDataTicket && activeDataTicket.map(ticket => {
+                    return (<TicketCard key={ticket.ticketId} data={ticket} />)
+                  })
+                }
               </div>
-              {
-                activeDataTicket && activeDataTicket.map(ticket => {
-                  return (<TicketCard key={ticket.ticketId} data={ticket} />)
-                })
-              }
             </div>
+
           </div>
         </div>
-      </div>
-    </Fragment>
+      </div >
+    </Fragment >
 
   );
 };
