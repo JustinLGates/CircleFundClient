@@ -23,7 +23,7 @@ const Profile = () => {
       console.error(error);
     }
     if (profileData === undefined) {
-      createProfile()
+      await createProfile()
     }
     setLoading(false);
   }
@@ -37,6 +37,7 @@ const Profile = () => {
       console.log(error)
     }
   }
+
   return loading ? (
     <Loading />
   ) : (
@@ -46,7 +47,7 @@ const Profile = () => {
           <div className="col-12 d-flex justify-content-between align-items-center">
             <div className="p-2">
               <img className="profile-pic" src={user.picture} />
-              <p>{user.nickname}</p>
+              <h6>Hello, {user.nickname}</h6>
             </div>
           </div>
         </div>

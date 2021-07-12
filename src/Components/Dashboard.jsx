@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Link } from "react-router-dom";
 import { api } from "../axios";
 import NewProjectForm from "./NewProjectForm";
@@ -14,7 +14,10 @@ const Dashboard = ({ profileData }) => {
   const getProjects = async () => {
     try {
       const response = await api.get('project');
+      console.log("project Data: " + response.data)
       console.log(response.data)
+      console.log("profile Data: " + profileData)
+      console.log(profileData)
       setProjects(response.data)
     } catch (error) {
       console.log(error)
@@ -25,7 +28,7 @@ const Dashboard = ({ profileData }) => {
   }
 
   return (
-    <fragment>
+    <Fragment>
 
       <div className="row pt-5">
         <div className="col-lg-10 col-xl-9 col-12 m-auto">
@@ -35,16 +38,14 @@ const Dashboard = ({ profileData }) => {
               <div className=" p-4  shadow">
                 <div className="d-flex justify-content-between">
                   <h2>Your Projects</h2>
-                  <h2>Role</h2>
                 </div>
                 <hr />
                 {
                   projects && projects.map(project => {
                     return (
                       <div className="col-10 m-auto" key={project.projectId}>
-                        <Link to={"projects/" + project.projectId} className="d-flex justify-content-between align-items-center highlight-on-hove">
-                          <h4 className="p-1 m-0 d-inline text-dark">{project.name}</h4>
-                          <h3 className="p-1 m-0 text-dark ">{project.role}</h3>
+                        <Link to={"projects/" + project.projectId} className="d-flex justify-content-between align-items-center highlight boxed-2 my-3 p-2">
+                          <h4 className="p-1 m-0 text-dark">{project.name}</h4>
                         </Link>
                       </div>
                     )
@@ -57,7 +58,7 @@ const Dashboard = ({ profileData }) => {
           </row>
         </div>
       </div>
-    </fragment>
+    </Fragment>
   )
 };
 
