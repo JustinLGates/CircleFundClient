@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SideNavDrawer from "../Components/SideNavDrawer"
-import { useParams } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
 import LabeledInput from "../Components/Composites/LabeledInput"
 import Button from "../Components/SmallElements/Button/Button"
 import Label from '../Components/SmallElements/Label'
@@ -12,8 +12,11 @@ const NewTicket = () => {
 
   const { getAccessTokenSilently } = useAuth0();
 
+  const [projectContributors, setProjectContributors] = useState([]);
+
   useEffect(() => {
     getProject();
+    getProjectContributors()
   }, []);
 
   const { projectId } = useParams();
@@ -37,12 +40,24 @@ const NewTicket = () => {
   const [createForWeb, setCreateForWeb] = useState(true);
   const [notes, setNotes] = useState("");
 
+  const history = useHistory();
+
   let formData = {};
 
   const getProject = async () => {
     setBearer("Bearer " + (await getAccessTokenSilently()));
     try {
       await api.get(`project/${projectId}`);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const getProjectContributors = async () => {
+    try {
+      const res = await api.get(`project/${projectId}/projectContributors`);
+      setProjectContributors(res.data)
+      console.log(res.data)
     } catch (error) {
       console.log(error)
     }
@@ -89,7 +104,10 @@ const NewTicket = () => {
     if (createForWeb) {
       await createTicket("web")
     }
+
     await updateTicketNumber()
+
+    history.push(`/projects/${projectId}`)
   };
 
   async function createTicket(platform) {

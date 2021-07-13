@@ -31,6 +31,7 @@ const Ticket = () => {
   const [designLink, setDesignLink] = useState("");
   const [platform, setPlatform] = useState("");
   const [notes, setNotes] = useState("");
+  const [projectContributors, setProjectContributors] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const [editingSetup, setEditingSetup] = useState(false)
@@ -49,6 +50,18 @@ const Ticket = () => {
   async function getTicketData() {
     setBearer("Bearer " + (await getAccessTokenSilently()));
     loadTicket();
+    getProjectContributors();
+    setLoading(false);
+  }
+
+  const getProjectContributors = async () => {
+    try {
+      const res = await api.get(`project/${projectId}/projectContributors`);
+      setProjectContributors(res.data)
+      console.log(res.data)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const editTestName = async (value) => {
@@ -67,7 +80,6 @@ const Ticket = () => {
   const loadTicket = async () => {
     try {
       let res = await api.get(`project/${projectId}/ticket/${ticketId}`);
-      console.log(res.data)
       setSetupArray(res.data.setup.split(","))
       setStepsArray(res.data.steps.split(","))
       setVerificationsArray(res.data.verifications.split(","))
@@ -80,13 +92,13 @@ const Ticket = () => {
       setPlatform(res.data.platform);
       setTestNumber(res.data.testNumber)
       setAutomate(res.data.automate)
-
-      console.log(res.data.automate)
+      setAssignedTo(res.data.assignedTo)
+      console.log("assignedTo: ")
+      console.log(res.data.assignedTo)
 
     } catch (error) {
       console.error(error);
     }
-    setLoading(false);
   }
 
   let formData = {};
@@ -117,7 +129,7 @@ const Ticket = () => {
     formData = {
       testName: testName || "",
       priorityLevel: data.priorityLevel || priorityLevel || "undetermined",
-      assignedTo: assignedTo || "unassigned",
+      assignedTo: data.assignedTo || assignedTo,
       setup: setupArray.toString() || "",
       steps: stepsArray.toString() || "",
       verifications: verificationsArray.toString() || "",
@@ -205,6 +217,12 @@ const Ticket = () => {
     setEditingVerifications(false)
     setVerifications("")
     sendEditTicketRequest(e)
+  }
+
+  const editAssignTo = (value) => {
+    setAssignedTo(value)
+    console.log("setting assgnedTo: " + value)
+    sendEditTicketRequest(null, { assignedTo: value })
   }
 
   return loading ? (
@@ -459,24 +477,21 @@ const Ticket = () => {
               <Label text={"Assigned To"} />
             </span>
 
-            <select onChange={(e) => setAssignedTo(e.target.value)} class="form-select" aria-label="Select assign to">
-              <option default value="Add names" >Static names</option>
-              <option value="joe">joe</option>
-              <option value="bob">bob</option>
-              <option value="bill">bill</option>
-              <option value="jim">Invalid</option>
+            <select onChange={(e) => editAssignTo(e.target.value)} class="form-select" aria-label="Select assign to">
+              <option default value={assignedTo}>{assignedTo}</option>
+              {
+                projectContributors.map(contributor =>
+                  <option key={contributor.userId} value={contributor.contributorName}>{contributor.contributorName + ' Role(' + contributor.role + ')'}</option>
+                )
+              }
+
             </select>
           </div>
-
-          <div className="d-flex flex-column mx-2rem">
+          {/* TODO implement comments add / edit / delete your comments. */}
+          {/* <div className="d-flex flex-column mx-2rem">
             <label classname="" htmlFor={notes}>Notes</label>
             <textarea className="" cols="8" name={notes} onChange={(e) => setNotes(e.target.value)} />
-          </div>
-          <div className="px-5 mx-5 pt-3">
-            <div class="modal-footer">
-              <Button text={"Update"} onclick={handleSubmitForm} />
-            </div>
-          </div>
+          </div> */}
         </form>
       </div>
     </div >

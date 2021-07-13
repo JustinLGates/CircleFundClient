@@ -8,17 +8,21 @@ import SideNavDrawer from "../Components/SideNavDrawer"
 
 const Project = () => {
 
-  const { projectId } = useParams();
   const { getAccessTokenSilently } = useAuth0();
+
+  const { projectId } = useParams();
+
   const [ticketData, setTicketData] = useState([]);
   const [activeDataTicket, setActiveTicketData] = useState([]);
 
   const [includesIos, setIncludesIos] = useState(true);
   const [includesAndroid, setIncludesAndroid] = useState(true);
   const [includesWeb, setIncludesWeb] = useState(true);
+
   const [query, setQuery] = useState("");
 
   const [projectName, setProjectName] = useState();
+
   const [loading, setLoading] = useState(true);
 
   const reportLinks = [
@@ -38,6 +42,7 @@ const Project = () => {
     setBearer("Bearer " + (await getAccessTokenSilently()));
     getProject();
     loadTickets();
+
     setLoading(false);
   }
 
@@ -145,70 +150,64 @@ const Project = () => {
                   <div className="col-12">
                     <input onChange={(e) => filterTickets(e)} className="" id="search-bar" type="text" placeholder="Search by feature or test name" />
                   </div>
-                  <div className="d-flex justify-content-between">
-                    {/* 
-                     
-                    */}
+                  {/* <div className=""> */}
 
-                    <div className="col-12">
+                  <div className="col-12 ">
 
-                      <div className="row mt-3">
-                        <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
-                          <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
-                            <div className="text-center">
-                              <label className="px-2">Web</label>
-                              <div className="d-flex align-items-center">
-                                <i className="fas fa-desktop px-2"></i>
-                                <div className="d-inline-flex px-2">
-                                  <label className="switch">
-                                    <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => filterTicketsByPlatform(e, "web")} />
-                                    <span className="slider round"></span>
-                                  </label>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
-                          <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
-                            <div className="text-center">
-                              <label className="px-2">Android</label>
-                              <div className="d-flex align-items-center">
-                                <i className="fab fa-android px-2"></i>
-                                <div className="d-inline-flex px-2">
-                                  <label className="switch">
-                                    <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => filterTicketsByPlatform(e, "android")} />
-                                    <span className="slider round"></span>
-                                  </label>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
-                          <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
-                            <div className="text-center">
-                              <label className="px-2">iOS</label>
-                              <div className="d-flex align-items-center">
-                                <i className="fab fa-apple px-2"></i>
-                                <div className="d-inline-flex px-2">
-                                  <label className="switch">
-                                    <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => filterTicketsByPlatform(e, "ios")} />
-                                    <span className="slider round"></span>
-                                  </label>
-                                </div>
+                    <div className="row mt-3">
+                      <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
+                        <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
+                          <div className="text-center">
+                            <label className="px-2">Web</label>
+                            <div className="d-flex align-items-center">
+                              <i className="fas fa-desktop px-2"></i>
+                              <div className="d-inline-flex px-2">
+                                <label className="switch">
+                                  <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => filterTicketsByPlatform(e, "web")} />
+                                  <span className="slider round"></span>
+                                </label>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
 
+                      <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
+                        <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
+                          <div className="text-center">
+                            <label className="px-2">Android</label>
+                            <div className="d-flex align-items-center">
+                              <i className="fab fa-android px-2"></i>
+                              <div className="d-inline-flex px-2">
+                                <label className="switch">
+                                  <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => filterTicketsByPlatform(e, "android")} />
+                                  <span className="slider round"></span>
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
-                      {/* 
-                    */}
+                      <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
+                        <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
+                          <div className="text-center">
+                            <label className="px-2">iOS</label>
+                            <div className="d-flex align-items-center">
+                              <i className="fab fa-apple px-2"></i>
+                              <div className="d-inline-flex px-2">
+                                <label className="switch">
+                                  <input name="chk" type="checkbox" defaultChecked={true} onChange={(e) => filterTicketsByPlatform(e, "ios")} />
+                                  <span className="slider round"></span>
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
+                    <hr className="bg-dark" />
                   </div>
                 </div>
 
