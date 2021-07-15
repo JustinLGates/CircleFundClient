@@ -6,8 +6,7 @@ const TestSuites = () => {
   const { projectId } = useParams();
   const reportLinks = [
     { link: `/projects/${projectId}`, text: "Project", icon: "fas fa-arrow-circle-left " },
-    { link: `/projects/${projectId}`, text: "Project", icon: "fa fa-book " },
-    { link: `/projects/${projectId}`, text: "Project", icon: "fa fa-book " }
+    { link: `/project/${projectId}/new/testSuite`, text: "CREATE TEST SUITE", icon: "fa fa-plus-circle" },
   ]
   return (
     <div className="row">
@@ -15,7 +14,8 @@ const TestSuites = () => {
 
         <SideNavDrawer links={reportLinks} />
 
-        <div className="p-4"><h1>HELLO Test Suite</h1></div>
+        <div className="p-4"><h1>Test Suite</h1></div>
+        <p>No new suites create a test suite to get started.</p>
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ const TicketCard = ({ data }) => {
                 <div>
                   <div className="d-flex flex-column text-dark justify-content-between">
                     <div className="d-flex text-dark justify-content-between">
-                      <label className="mr-">Platform: {data.platform}</label>
+                      <label className="mr-3">Platform: {data.platform}</label>
                       <label>Test number: {data.testNumber}</label>
                     </div>
                     <div className="d-flex justify-content-between align-items-center">
@@ -30,7 +30,7 @@ const TicketCard = ({ data }) => {
                         <i className={data.priorityLevel === "High" ? "fas fa-angle-double-up text-danger" : data.priorityLevel === "Medium" ? "fas fa-angle-up text-danger " : data.priorityLevel === "Undetermined" ? "fas fa-minus text-warning" : data.priorityLevel === "Low" ? "fas fa-angle-down text-success" : "fas fa-angle-double-down text-success"}></i>
                       </label>
                     </div>
-                    <label className="text-dark"> Assigned To: {data.assignedTo}</label>
+                    <label className="text-dark text-left"> Assigned To: {data.assignedTo}</label>
                   </div>
                 </div>
               </div>

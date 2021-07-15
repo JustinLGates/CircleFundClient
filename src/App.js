@@ -16,6 +16,7 @@ import Ticket from "./Pages/Ticket";
 import Reports from "./Pages/Reports"
 import TestSuites from "./Pages/TestSuites"
 import MangaeContributors from "./Pages/ManageContributors"
+import NewTestSuite from "./Pages/NewTestSuite";
 
 function App() {
   //NOTE If the user is authenticated the beraer token will be set in axios and sent with all
@@ -40,9 +41,11 @@ function App() {
         <Route path="/contactus" exact component={ContactUs} />
         <Route path="/profile" exact component={Profile} />
         <Route path="/projects/:projectId" name="project" component={Project}/> 
-        <Route path="/project/:projectId/new/ticket" name="newTicket"  component={NewTicket}/>
+        <Route path="/project/:projectId/new/ticket" exact component={NewTicket}/>
         <Route path="/project/:projectId/ticket/:ticketId" name="ticket" component={Ticket}/>
-        <Route path="/project/:projectId/testSuite" name="testSuite"  component={TestSuites}/>
+        <Route path="/project/:projectId/new/testSuite" name="newtestSuite"  component={NewTestSuite}/>
+        <Route path="/project/:projectId/testSuite/:suiteId" name="testSuite"  component={NewTestSuite}/>
+        <Route path="/project/:projectId/testSuite" exact component={TestSuites}/>
         <Route path="/project/:projectId/reports" name="reports"  component={Reports}/>
         <Route path="/project/:projectId/manageContributors" name="manageContributors"  component={MangaeContributors}/>
 
