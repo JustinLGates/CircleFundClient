@@ -17,17 +17,53 @@ const NewTestSuite = () => {
   const { projectId } = useParams();
   const history = useHistory();
 
-  const [suiteName, setSuiteName] = useState();
+  const [platform, setPlatform] = useState();
+
+  const [testingIos, setTestingIos] = useState(false);
+  const [testingAndroid, setTestingAndroid] = useState(false);
+  const [testingWeb, setTestingWeb] = useState(false);
+
+  const [feature, setFeature] = useState();
+
 
   const reportLinks = [{ link: `/projects/${projectId}`, text: "Project", icon: "fas fa-arrow-circle-left" }]
 
-  async function createTestSuite() {
+  async function createTestRun(e) {
+    e.preventDefault()
+    const data = {
+      platform: platform,
+      feature: "test",
+      status: "incomplete"
+
+    }
+
     try {
-      let res = await api.post(`project/${projectId}/testSuite`);
-      console.error(res.data);
+      await api.post(`project/${projectId}/testrun`, data);
+      history.push(`/project/${projectId}/testruns`)
     } catch (error) {
       console.error(error);
     }
+  }
+
+  const setPlatformIos = () => {
+    setPlatform("ios")
+    setTestingAndroid(false)
+    setTestingWeb(false)
+    setTestingIos(true)
+  }
+
+  const setPlatformAndroid = () => {
+    setPlatform("android")
+    setTestingIos(false)
+    setTestingWeb(false)
+    setTestingAndroid(true)
+  }
+
+  const setPlatformWeb = () => {
+    setPlatform("web")
+    setTestingIos(false)
+    setTestingAndroid(false)
+    setTestingWeb(true)
   }
 
   return (
@@ -36,9 +72,66 @@ const NewTestSuite = () => {
         <SideNavDrawer links={reportLinks} />
         <form className="p-5 flex-grow-1 m-auto">
 
-          <LabeledInput name={"suiteName"} labelText={"Test Name"} onChange={(e) => setSuiteName(e.target.value)} />
 
-          <button className="btn btn-success">CREATE SUITE</button>
+          <div className="col-12 ">
+
+            <div className="row mt-3">
+              <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
+                <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
+                  <div className="text-center">
+                    <label className="px-2">Web</label>
+                    <div className="d-flex align-items-center">
+                      <i className="fas fa-desktop px-2"></i>
+                      <div className="d-inline-flex px-2">
+                        <label className="switch">
+                          <input name="chk" type="checkbox" checked={testingWeb} onChange={(e) => setPlatformWeb(e, "web")} />
+                          <span className="slider round"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
+                <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
+                  <div className="text-center">
+                    <label className="px-2">Android</label>
+                    <div className="d-flex align-items-center">
+                      <i className="fab fa-android px-2"></i>
+                      <div className="d-inline-flex px-2">
+                        <label className="switch">
+                          <input name="chk" type="checkbox" checked={testingAndroid} onChange={(e) => setPlatformAndroid(e, "android")} />
+                          <span className="slider round"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-lg-4 col-12 d-lg-flex d-block justify-content-center p-2">
+                <div className="p-3 d-lg-flex d-block justify-content-center align-items-center">
+                  <div className="text-center">
+                    <label className="px-2">iOS</label>
+                    <div className="d-flex align-items-center">
+                      <i className="fab fa-apple px-2"></i>
+                      <div className="d-inline-flex px-2">
+                        <label className="switch">
+                          <input name="chk" type="checkbox" checked={testingIos} onChange={(e) => setPlatformIos(e, "ios")} />
+                          <span className="slider round"></span>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <hr className="bg-dark" />
+          </div>
+
+          <button onClick={(e) => createTestRun(e)} className="btn btn-success">CREATE SUITE</button>
         </form>
       </div>
     </div>

@@ -29,7 +29,7 @@ const Project = () => {
     { link: `/profile`, text: "Projects", icon: "fas fa-arrow-circle-left" },
     { link: `/project/${projectId}/new/ticket`, text: "New Test", icon: "fa fa-plus-circle" },
     { link: `/project/${projectId}/reports`, text: "Reports", icon: "fas fa-chart-pie" },
-    { link: `/project/${projectId}/testSuite`, text: "Test Run", icon: "fas fa-flask" },
+    { link: `/project/${projectId}/testruns`, text: "Test Run", icon: "fas fa-flask" },
     { link: `/project/${projectId}/manageContributors`, text: "Contributors", icon: "fas fa-users" }
 
   ]
