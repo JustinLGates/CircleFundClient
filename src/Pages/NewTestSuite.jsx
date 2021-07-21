@@ -38,7 +38,24 @@ const NewTestSuite = () => {
     }
 
     try {
-      await api.post(`project/${projectId}/testrun`, data);
+      let testRun = await api.post(`project/${projectId}/testrun`, data);
+      console.log("TEST RUN")
+      console.log(testRun.data.id)
+      let tickets = await api.get(`project/${projectId}/ticket`)
+      let filteredTickets = tickets.data.filter(t => t.platform === data.platform && t.relatedFeature === data.feature)
+
+      console.log("tickets..")
+      console.log(filteredTickets)
+      await filteredTickets.forEach(ticket => {
+        let data = {
+          testName: ticket.testName,
+          testId: ticket.id
+        }
+
+        console.log("Sending data:")
+        console.log(data)
+        api.post(`project/${projectId}/testrun/${testRun.data.id}/testinstance`, data)
+      })
       history.push(`/project/${projectId}/testruns`)
     } catch (error) {
       console.error(error);

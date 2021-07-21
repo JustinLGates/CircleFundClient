@@ -8,7 +8,7 @@ import SideNavDrawer from "../Components/SideNavDrawer"
 import LabeledInput from "../Components/Composites/LabeledInput"
 import Label from "../Components/SmallElements/Label"
 
-const EditTicketComponent = ({ ticketId }) => {
+const EditTicketComponent = ({ ticketData }) => {
 
   const { projectId } = useParams();
   const { getAccessTokenSilently } = useAuth0();
@@ -35,11 +35,6 @@ const EditTicketComponent = ({ ticketId }) => {
   const [editingSetup, setEditingSetup] = useState(false)
   const [editingSteps, setEditingSteps] = useState(false)
   const [editingVerifications, setEditingVerifications] = useState(false)
-
-
-  const reportLinks = [
-    { link: `/projects/${projectId}`, text: "Project", icon: "fas fa-arrow-circle-left" },
-  ]
 
   useEffect(() => {
     getTicketData();
@@ -77,22 +72,22 @@ const EditTicketComponent = ({ ticketId }) => {
 
   const loadTicket = async () => {
     try {
-      let res = await api.get(`project/${projectId}/ticket/${ticketId}`);
-      setSetupArray(res.data.setup.split(","))
-      setStepsArray(res.data.steps.split(","))
-      setVerificationsArray(res.data.verifications.split(","))
-      setPriorityLevel(res.data.priorityLevel);
-      setRelatedFeature(res.data.relatedFeature);
-      setStatus(res.data.status);
-      setJiraTicket(res.data.jiraTicket)
-      setDesignLink(res.data.designLink)
-      setTestName(res.data.testName);
-      setPlatform(res.data.platform);
-      setTestNumber(res.data.testNumber)
-      setAutomate(res.data.automate)
-      setAssignedTo(res.data.assignedTo)
-      console.log("assignedTo: ")
-      console.log(res.data.assignedTo)
+      if (ticketData) {
+        // let res = await api.get(`project/${projectId}/ticket/${ticketId}`);
+        setSetupArray(ticketData.setup.split(","))
+        setStepsArray(ticketData.steps.split(","))
+        setVerificationsArray(ticketData.verifications.split(","))
+        setPriorityLevel(ticketData.priorityLevel);
+        setRelatedFeature(ticketData.relatedFeature);
+        setStatus(ticketData.status);
+        setJiraTicket(ticketData.jiraTicket)
+        setDesignLink(ticketData.designLink)
+        setTestName(ticketData.testName);
+        setPlatform(ticketData.platform);
+        setTestNumber(ticketData.testNumber)
+        setAutomate(ticketData.automate)
+        setAssignedTo(ticketData.assignedTo)
+      }
 
     } catch (error) {
       console.error(error);
@@ -142,7 +137,7 @@ const EditTicketComponent = ({ ticketId }) => {
     if (data.automate !== undefined) { formData.automate = data.automate }
 
     try {
-      api.put(`project/${projectId}/ticket/${ticketId}`, formData);
+      api.put(`project/${projectId}/ticket/${ticketData.id}`, formData);
     } catch (error) {
       console.error(error);
     }

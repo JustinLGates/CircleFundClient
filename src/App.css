@@ -28,9 +28,14 @@ outline:rgba(0, 0, 0, 0.103) solid 1px;
   background-color: rgba(0, 0, 0, 0.019);
 }
 
+.mw-500{
+  max-width: 500px;
+}
+
 form {
   max-width: 1000px;
 }
+
 hr {
   padding: .1rem
 }
