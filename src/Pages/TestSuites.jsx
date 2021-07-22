@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import SideNavDrawer from "../Components/SideNavDrawer"
 import { api, setBearer } from "../axios"
-import { useParams, Link } from "react-router-dom"
+import { useParams, useHistory } from "react-router-dom"
 import Loading from "../Components/Loading"
 import { useAuth0 } from "@auth0/auth0-react";
 const TestSuites = () => {
 
+  const history = useHistory();
   const { getAccessTokenSilently } = useAuth0();
   const { projectId } = useParams();
 
@@ -42,6 +43,21 @@ const TestSuites = () => {
     }
   }
 
+  const navigateToRun = (runId) => {
+    history.push(`/project/${projectId}/testrun/${runId}`)
+  }
+
+  const deleteRun = async (e, id) => {
+    e.stopPropagation();
+    setRuns(runs.filter(r => r.id !== id))
+    try {
+      const res = await api.delete(`project/${projectId}/testrun/${id}`);
+      console.log(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <div className="row">
       <div className="col-12 d-flex">
@@ -53,34 +69,37 @@ const TestSuites = () => {
           {
             loading ?
               <Loading />
-
               :
-
               <div>
                 {
                   runs.length > 0 ?
                     <div>
                       {runs.map(run =>
-                        <Link key={run.id} className="boxed-2 highlight action p-2" title="start run." to={`/project/${projectId}/testrun/${run.id}`}>
-                          <label className="">Platform: {run.platform}</label><br />
-                          <label className="">Feature: {run.feature}</label><br />
-                          <label className="">Status: {run.status}</label>
-                        </Link>
-                      )
+                        <div>
+                          <div key={run.id} className="boxed-2 highlight action p-2 my-3" title="start run." onClick={() => navigateToRun(run.id)}>
+                            <div>
 
+                              <div>
+                                <label className="">TestRun: {run.id}</label><br />
+                                <label className="">Platform: {run.platform}</label><br />
+                                <label className="">Feature: {run.feature}</label><br />
+                                <label className="">Status: {run.status}</label>
+                              </div>
+                              <div>
+                                <button className="btn btn-danger" onClick={(e) => deleteRun(e, run.id)}>DELETE</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      )
                       }
                     </div> :
-
                     <h3 className="mt-lg-5 text-center">No test runs started add a test run to get started.</h3>
                 }
               </div>
-
           }
           <div>
-
-
           </div>
-
         </div>
       </div>
     </div>

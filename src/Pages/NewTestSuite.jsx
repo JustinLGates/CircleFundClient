@@ -32,7 +32,7 @@ const NewTestSuite = () => {
     e.preventDefault()
     const data = {
       platform: platform,
-      feature: "test",
+      feature: feature,
       status: "incomplete"
 
     }
@@ -146,6 +146,13 @@ const NewTestSuite = () => {
 
             </div>
             <hr className="bg-dark" />
+            <div className=" p-2 shadow">
+              <LabeledInput className="pr-2"
+                inputValue={feature}
+                name={"feature to test"}
+                labelText="Feature to Test"
+                onChange={(e) => setFeature(e.target.value)} />
+            </div>
           </div>
 
           <button onClick={(e) => createTestRun(e)} className="btn btn-success">CREATE SUITE</button>
